@@ -1,0 +1,58 @@
+/*.hidden {
+	margin: 0px 0px 0px 0px;
+	display: none;
+}*/
+
+.kop {
+	font-size: x-small;
+	font-weight: bold;
+	font-family: arial, helvetica; 
+}
+
+.button_not_ok {
+	background-color: #ff0000;
+}
+
+.not_ok {
+	color: #ff0000;
+}	
+
+.button_ok {
+	background-color: #33CC00;
+}
+
+.ok {
+	color: #33CC00;
+}
+
+.button_warning {
+	background-color: #FF9900;
+}
+
+.warning {
+	color: #FF9900;
+}
+.to_late {
+	color: red; 
+	font-weight: bold; 
+	font-size: larger; 
+	text-decoration: blink;
+}
+
+.code {
+	font-family: "Courier New, Courier, mono";
+	font-size: 11px;
+	font-style: normal;
+	font-weight: 700;
+	font-variant: normal;
+	text-indent: 0;
+	white-space: pre;
+	margin: 0px;
+}
+
+.taskwho {
+	font-family: "Courier New, Courier, mono";
+	font-size: 13px;
+	font-style: normal;
+	margin: 0px;
+}
