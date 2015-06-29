@@ -35,7 +35,7 @@ $nav->addSubMenu(array('desc'=>'Admin',
 // ********************************************
 $Revision="";
 $Date="";
-$version="Version$Revision: 1.62 $ (Date$Date: 2007/09/07 14:38:04 $)";
+$version="Version$Revision: 0.0.2 $ (Date$Date: 29/06/2015 07:31:00 $)";
 $version=str_replace("$", "",$version);
 $errormsg="";
 

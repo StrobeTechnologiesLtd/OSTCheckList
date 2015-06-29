@@ -5,16 +5,13 @@
 	$myurl="http://www.strobe-it.co.uk/check/";
 	# on which host is the database located
 	//$dbhost="mysql";
-	$dbhost="213.171.200.63";
+	$dbhost="IP ADDESS";
 	# what is the name of the database user
-	//$dbuser="username";
-	$dbuser="strobe_adm";
+	$dbuser="username";
 	# what is the password of the database user
-	//$dbpassword="password";
-	$dbpassword="m@dwalk3r";
+	$dbpassword="password";
 	# what is de name off the database
-	//$database="checklist";
-	$database="strobe_db";
+	$database="checklist";
 	#$database="san_chklst2";
 	# which url do we want with the '?' after every checklist items
 	$wikiurl="https://server2/wiki";

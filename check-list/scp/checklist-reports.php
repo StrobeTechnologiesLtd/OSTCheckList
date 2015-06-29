@@ -38,7 +38,7 @@ $Date="";
 global $errormsg;
 global $version;
 $errormsg="";
-$version="Version$Revision: 1.9 $ (Date$Date: 2007/09/06 14:28:29 $)";
+$version="Version$Revision: 0.0.2 $ (Date$Date: 29/06/2015 07:31:00 $)";
 $version=str_replace("$", "",$version);
 
 include (CHECKLIST_INCLUDE_DIR.'settings.php');

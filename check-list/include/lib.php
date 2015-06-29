@@ -2,17 +2,19 @@
 # load language file
 include (CHECKLIST_INCLUDE_DIR."lang_".$locale.".php");
 
-$link = mysql_connect($dbhost,$dbuser,$dbpassword)
+/*$link = mysql_connect($dbhost,$dbuser,$dbpassword)
 	or die($lang[15].mysql_error());
-mysql_select_db($database) or die($lang[16]);
+mysql_select_db($database) or die($lang[16]);*/
 	
 function getPartOfDay() {
 	global $lang;
 	# get the current part of the day
 	$query = "SELECT nummer from dagdelen where time(now())>=starttijd 
 		and time(now())< eindtijd"; # WHERE id=".$id." ";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
-	$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
+	//$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	$row = db_fetch_array($result, MYSQL_ASSOC);
 	$dagdeel=$row["nummer"];
 	mysql_free_result($result);
 	return $dagdeel;
@@ -25,8 +27,10 @@ function show_calendar($file, $year, $month) {
 	$days=array();
 	$query = "select distinct day(datum) as dag from entries where month(datum)=" 
 		.$month." and year(datum)=".$year;
-	$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
-	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	//$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
+	$result = db_query($query);
+	//while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
 		$days[$row["dag"]] = array('./checklist.php?datum='.
 			$year."-".$month."-".$row["dag"],'linked-day') ;
 	}
@@ -41,10 +45,12 @@ function numberOfCheckpoints() {
 	global $lang;
 	# get the number of 
 	$query = "SELECT count(*) AS total FROM checklist where disabled != true and header=0";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
-	$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
+	//$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	$row = db_fetch_array($result, MYSQL_ASSOC);
 	$total=$row["total"];
-	mysql_free_result($result);
+	//mysql_free_result($result);
 	return $total;
 }
 
@@ -52,30 +58,36 @@ function totalnumberOfCheckpoints() {
 	global $lang;
 	# get the number of 
 	$query = "SELECT count(*) AS total FROM checklist";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
-	$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
+	//$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	$row = db_fetch_array($result, MYSQL_ASSOC);
 	$total=$row["total"];
-	mysql_free_result($result);
+	//mysql_free_result($result);
 	return $total;
 }
 
 function numberOfEnteredCheckpointsToday() {
 	global $lang;
 	$query = "SELECT count(distinct(ref))  AS entered FROM entries WHERE date(datum) LIKE date(now())";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
-	$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
+	//$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	$row = db_fetch_array($result, MYSQL_ASSOC);
 	$entered=$row["entered"];
-	mysql_free_result($result);
+	//mysql_free_result($result);
 	return $entered;
 }
 
 function numberOfChecks($period) {
 	global $lang;
 	$query = "SELECT count(*)  AS number FROM checklist WHERE period=".$period." and header=0";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
-	$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
+	//$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	$row = db_fetch_array($result, MYSQL_ASSOC);
 	$number=$row["number"];
-	mysql_free_result($result);
+	//mysql_free_result($result);
 	return $number;
 }
 
@@ -100,23 +112,27 @@ function display_checklist($datum){
 	$query .= " or ( period=1 and week(date(datum))=week(date('".$datum."')) )";
 	$query .= " or ( period=2 and month(date(datum))=month(date('".$datum."')) )    )";
 	#print "\n<!-- $query -->\n";
-	$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
-	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	//$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
+	$result = db_query($query);
+	//while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
 		$ref[$row["ref"]]=1;
 	}
 	print "\n\n\n";
-	mysql_free_result($result);
-	$dagdeel=getPartOfDay(); //?? (dagdeel is Dutch for day part)
+	//mysql_free_result($result);
+	//$dagdeel=getPartOfDay(); //?? (dagdeel is Dutch for day part)
 
 
 	# display checklist with link if applicable.
 	$query = "SELECT * FROM checklist where disabled != true ORDER BY dagdeel,orde";
-	$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
+	//$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
+	$result = db_query($query);
 	$oudedagdeel=1;
 		echo '<tr>';
 			//echo '<td valign="middle" nowrap>';
 			echo '<td valign="middle">';
-				while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+				//while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+				while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
 					if ($oudedagdeel < $row["dagdeel"] ) {
 						$oudedagdeel=$row["dagdeel"];
 						print "<hr>\n";
@@ -177,7 +193,7 @@ function display_checklist($datum){
 		echo '</tr>';
 	echo '</table>';
 	
-	mysql_free_result($result);
+	//mysql_free_result($result);
 }
 
 function display_datelog($datum) {
@@ -212,9 +228,11 @@ function display_datelog($datum) {
 		# start display of section
 		if ( numberOfChecks($period)>0 ) {
 			print "<h2>".$heading[$period]."</h2>";
-			$result = mysql_query($query) or exit ("Ongeldige query " . mysql_error()); 
+			//$result = mysql_query($query) or exit ("Ongeldige query " . mysql_error()); 
+			$result = db_query($query);
 			print "<ul>";
-			while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+			//while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+			while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
 				print "<li>";
 				if ( $row["status"] == -1 ) { print "<span class='not_ok'>";}
 				if ( $row["status"] ==  1 ) { print "<span class='ok'>";}
@@ -236,10 +254,12 @@ function edit_form($act,$id,$current_user) {
 	//global $lang;
 	if ( isset($act)  ) {
 		$query = "SELECT * FROM checklist WHERE id=".$id." ";
-		$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
-		$row = mysql_fetch_array($result, MYSQL_ASSOC);
+		//$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
+		$result = db_query($query);
+		//$row = mysql_fetch_array($result, MYSQL_ASSOC);
+		$row = db_fetch_array($result, MYSQL_ASSOC);
 		echo '<h2>'.$row['tekst'].'</h2>';
-		mysql_free_result($result);
+		//mysql_free_result($result);
 		echo '<form method="post" action="checklist.php">';
 			csrf_token();
 			echo '<input type="hidden" name="act" value="2">';
@@ -260,7 +280,8 @@ function store_form($current_user,$act,$id,$logmessage,$status) {
 		$escaped_logmessage = mysql_escape_string($logmessage);
 		$query  = "INSERT INTO entries (door,datum,ref,tekst,status) values('";
 		$query .= $current_user."',now(),".$id.",'".$escaped_logmessage."',".$status.")\n";
-		$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error());
+		//$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error());
+		$result = db_query($query);
 	} else {
 		$errormsg .= $lang[1];
 	}
@@ -287,17 +308,21 @@ function store_form($current_user,$act,$id,$logmessage,$status) {
 function daily_percent($date) {
 	// Get Daily total of checks to perform
 	$query = "SELECT count(*) as total FROM checklist where disabled !=true AND header=0 AND period=0";
-	$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
-	$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	//$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
+	$result = db_query($query);
+	//$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	$row = db_fetch_array($result, MYSQL_ASSOC);
 	$total=$row["total"];
-	mysql_free_result($result);
+	//mysql_free_result($result);
 	
 	// Get Daily processed total
 	$query = "SELECT *,entries.tekst as tekst, checklist.tekst as tekst2, count(distinct(ref)) as entered FROM entries,checklist WHERE entries.ref=checklist.id AND checklist.period=0 AND date(datum) LIKE date('".$date."')";
-	$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
-	$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	//$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
+	$result = db_query($query);
+	//$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	$row = db_fetch_array($result, MYSQL_ASSOC);
 	$entered=$row["entered"];
-	mysql_free_result($result);
+	//mysql_free_result($result);
 	
 	// Print Percentage
 	printf ("<font size='5px'>Daily %1.0f%%</font>\n",($entered/$total)*100  );
@@ -306,17 +331,21 @@ function daily_percent($date) {
 function weekly_percent($date) {
 	// Get Weekly total of checks to perform
 	$query = "SELECT count(*) as total FROM checklist where disabled !=true AND header=0 AND period=1";
-	$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
-	$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	//$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
+	$result = db_query($query);
+	//$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	$row = db_fetch_array($result, MYSQL_ASSOC);
 	$total=$row["total"];
-	mysql_free_result($result);
+	//mysql_free_result($result);
 	
 	// Get Weekly processed total
 	$query = "SELECT *,entries.tekst as tekst, checklist.tekst as tekst2, count(distinct(ref)) as entered FROM entries,checklist WHERE entries.ref=checklist.id AND checklist.period=1 AND week(date(datum)) LIKE week(date('".$date."'))";
-	$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
-	$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	//$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
+	$result = db_query($query);
+	//$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	$row = db_fetch_array($result, MYSQL_ASSOC);
 	$entered=$row["entered"];
-	mysql_free_result($result);
+	//mysql_free_result($result);
 	
 	// Print Percentage
 	printf ("<font size='5px'>Weekly %1.0f%%</font>\n",($entered/$total)*100  );
@@ -325,17 +354,21 @@ function weekly_percent($date) {
 function monthly_percent($date) {
 	// Get Monthly total of checks to perform
 	$query = "SELECT count(*) as total FROM checklist where disabled !=true AND header=0 AND period=2";
-	$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
-	$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	//$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
+	$result = db_query($query);
+	//$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	$row = db_fetch_array($result, MYSQL_ASSOC);
 	$total=$row["total"];
-	mysql_free_result($result);
+	//mysql_free_result($result);
 	
 	// Get Monthly processed total
 	$query = "SELECT *,entries.tekst as tekst, checklist.tekst as tekst2, count(distinct(ref)) as entered FROM entries,checklist WHERE entries.ref=checklist.id AND checklist.period=2 AND month(date(datum)) LIKE month(date('".$date."'))";
-	$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
-	$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	//$result = mysql_query($query) or exit ("Invalid Query: " . mysql_error()); 
+	$result = db_query($query);
+	//$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	$row = db_fetch_array($result, MYSQL_ASSOC);
 	$entered=$row["entered"];
-	mysql_free_result($result);
+	//mysql_free_result($result);
 	
 	// Print Percentage
 	printf ("<font size='5px'>Monthly %1.0f%%</font>\n",($entered/$total)*100  );

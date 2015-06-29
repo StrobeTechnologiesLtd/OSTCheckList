@@ -33,7 +33,7 @@ $nav->addSubMenu(array('desc'=>'Admin',
 
 // *** Check List Plugin - Includes / Variables
 // ********************************************
-$version="Version\$Revision: 1.7 $ (Date\$Date: 2007/09/07 13:59:06 $)";
+$version="Version$Revision: 0.0.2 $ (Date$Date: 29/06/2015 07:31:00 $)";
 $version=str_replace("$", "",$version);
 $errormsg="";
 
@@ -68,8 +68,10 @@ if (   isset($warning)) { $status=2;}
 
 function get_row($id) {
 	$query = "SELECT * FROM checklist where id=".$id."";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
-	$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
+	//$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	$row = db_fetch_array($result, MYSQL_ASSOC);
 	return $row;
 }
 
@@ -88,12 +90,14 @@ function incr_field($id,$field) {
 	$max=1000;
 	if ( $field == "period" ) { $max=count($lang[34])-1; }
 	$query = "update checklist set ".$field."=".$field."+1 where id=".$id." and ".$field." < ".$max;
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
 }
 function decr_field($id,$field) {
 	global $lang;
 	$query = "update checklist set ".$field."=".$field."-1 where id=".$id." and ".$field." > 0";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
 }
 
 function move_item_up($id) {
@@ -103,14 +107,18 @@ function move_item_up($id) {
 	$row1=get_row($id);
 	//$query = "SELECT * FROM checklist where orde<".$row1["orde"]." order by orde limit 1";
 	$query = "SELECT * FROM checklist where orde=".($row1["orde"]-1)." order by orde limit 1";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
-	$row2 = mysql_fetch_array($result, MYSQL_ASSOC);
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
+	//$row2 = mysql_fetch_array($result, MYSQL_ASSOC);
+	$row2 = db_fetch_array($result, MYSQL_ASSOC);
 	echo "id ".$row1["id"]." with orde ".$row1["orde"]." will become ".$row2["orde"]."<br>\n";
 	echo "id ".$row2["id"]." with orde ".$row2["orde"]." will become ".$row1["orde"]."<br>\n";
 	$query = "update checklist set orde=".$row2["orde"]." where id=".$row1["id"]."";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
 	$query = "update checklist set orde=".$row1["orde"]." where id=".$row2["id"]."";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
 }
 
 function move_item_down($id) {
@@ -120,33 +128,40 @@ function move_item_down($id) {
 	$row1=get_row($id);
 	//$query = "SELECT * FROM checklist where orde>".$row1["orde"]." order by orde limit 1";
 	$query = "SELECT * FROM checklist where orde=".($row1["orde"]+1)." order by orde limit 1";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
-	$row2 = mysql_fetch_array($result, MYSQL_ASSOC);
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
+	//$row2 = mysql_fetch_array($result, MYSQL_ASSOC);
+	$row2 = db_fetch_array($result, MYSQL_ASSOC);
 	#echo "id ".$row1["id"]." with orde ".$row1["orde"]." will become ".$row2["orde"]."<br>\n";
 	#echo "id ".$row2["id"]." with orde ".$row2["orde"]." will become ".$row1["orde"]."<br>\n;
 	$query = "update checklist set orde=".$row2["orde"]." where id=".$row1["id"]."";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
 	$query = "update checklist set orde=".$row1["orde"]." where id=".$row2["id"]."";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
 }
 
 function change_period($id,$value) {
 	# change the period of the item.
 	$query = "update checklist set period=".$value." where id=".$id."";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
 }
 
 function update_text($id,$value) {
 	# change the text of the item.
 	$query = "update checklist set tekst='".$value."' where id=".$id."";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
 }
 
 function update_disabled($id,$value,$field) {
 	# change the text of the item.
 	$value=strval($value);
 	$query = "update checklist set ".$field."='".$value."' where id=".$id."";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
 }
 
 function insert_new_item() {
@@ -154,7 +169,8 @@ function insert_new_item() {
 	//$query = "insert into checklist (id) values (0) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)";
 	$query = "insert into checklist (orde) values (".$orde_no.")";
 	#INSERT INTO table (a,b,c) VALUES (1,2,3) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), c=3;
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
 }
 
 function checklist_admin($cid,$action,$value) {
@@ -199,7 +215,8 @@ function checklist_admin($cid,$action,$value) {
 
 	# display checklist items with links.
 	$query = "SELECT * FROM checklist ORDER BY orde";
-	$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+	$result = db_query($query);
 	$rows = mysql_num_rows($result);
 	print "<tr>";
 	foreach ($lang[35] as $key => $period) {
@@ -208,7 +225,8 @@ function checklist_admin($cid,$action,$value) {
 	}
 	print "</tr>";
 	$counter=0;
-	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	//while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
 		$counter++;
 		# ID
 		$id=$row["id"];
@@ -291,7 +309,8 @@ function checklist_admin($cid,$action,$value) {
 		# display edit form to change the parts of the day. TODO :-)
 		print "<table cellspacing=5 cellpadding=5 border=0>";
 		$query = "SELECT * FROM dagdelen ORDER BY id";
-		$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+		//$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+		$result = db_query($query);
 		$rows = mysql_num_rows($result);
 		print "<tr>";
 		foreach ($lang[37] as $key => $period) {
@@ -300,7 +319,8 @@ function checklist_admin($cid,$action,$value) {
 		}
 		print "</tr>";
 		$counter=0;
-		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+		//while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+		while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
 			$counter++;
 			# ID
 		print "<tr>";
@@ -311,7 +331,7 @@ function checklist_admin($cid,$action,$value) {
 			print "<td>".$row["eindtijd"]."</td>";
 		print "</tr>";
 		}
-		mysql_free_result($result);
+		//mysql_free_result($result);
 
 	}
 

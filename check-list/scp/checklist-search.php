@@ -38,7 +38,7 @@ $Date="";
 global $errormsg;
 global $version;
 $errormsg="";
-$version="Version$Revision: 1.7 $ (Date$Date: 2007/09/06 14:28:29 $)";
+$version="Version$Revision: 0.0.2 $ (Date$Date: 29/06/2015 07:31:00 $)";
 # de volgende $ is een RCS keywordbegin en geen php variabele!
 $version=str_replace("$", "",$version);
 
