@@ -267,39 +267,10 @@ function checklist_admin($cid,$action,$value) {
 		if ($row["disabled"]==1) print "checked";
 			print "></form>";
 			print "</td>\n";
-			
-		# part of the day
-		show_number($id,$row["dagdeel"],"dagdeel");
-
 		print "</tr>";
-			
 		}
 		print "</table>";
 		print "<hr>";
-		# display edit form to change the parts of the day. TODO :-)
-		print "<table cellspacing=5 cellpadding=5 border=0>";
-		$query = "SELECT * FROM " . CHECKLIST_TABLE_DAGDELEN . " ORDER BY id";
-		$result = db_query($query);
-		$rows = mysql_num_rows($result);
-		print "<tr>";
-		foreach ($lang[37] as $key => $period) {
-			print "<th valign=\"middle\" nowrap>";
-			print $lang[37][$key]."</th>";
-		}
-		print "</tr>";
-		$counter=0;
-		while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
-			$counter++;
-			# ID
-		print "<tr>";
-			$id=$row["id"];
-			print "<td>".$id."</td>";
-			print "<td>".$row["nummer"]."</td>";
-			print "<td>".$row["starttijd"]."</td>";
-			print "<td>".$row["eindtijd"]."</td>";
-		print "</tr>";
-		}
-
 	}
 
 	##############################################################################

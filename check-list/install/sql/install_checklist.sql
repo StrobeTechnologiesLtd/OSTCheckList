@@ -20,16 +20,6 @@ CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%checklist` (
   KEY `dagdeel` (`dagdeel`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1$
 
-CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%checklist_dagdelen` (
-  `id` bigint(20) unsigned NOT NULL auto_increment,
-  `nummer` int(11) default NULL,
-  `starttijd` time default NULL,
-  `eindtijd` time default NULL,
-  PRIMARY KEY  (`id`),
-  UNIQUE KEY `id` (`id`),
-  KEY `nummer` (`nummer`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1$
-
 CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%checklist_entries` (
   `id` bigint(20) unsigned NOT NULL auto_increment,
   `datum` datetime default NULL,
