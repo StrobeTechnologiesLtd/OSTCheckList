@@ -38,9 +38,6 @@ $nav->addSubMenu(array('desc'=>'About',
 				
 // *** Check List Plugin - Includes / Variables
 // ********************************************
-include (CHECKLIST_INCLUDE_DIR.'lib.php');
-require (CHECKLIST_INCLUDE_DIR.'calendar.php');
-
 $num_columns=6;
 $status=0;
 
@@ -57,7 +54,6 @@ if (   isset($_POST['not_ok']))  { $status=-1;}
 if (   isset($_POST['ok']))      { $status=1;}
 if (   isset($_POST['warning'])) { $status=2;}
 
-setlocale(LC_TIME, 'uk_en');
 $time = time(); 
 $today = date('j',$time);
 $current_user = $thisstaff->getFirstName() . ' ' . $thisstaff->getLastName();
@@ -107,8 +103,7 @@ echo '<table>';
 											echo '</td>';
 										echo '</tr>';
 									echo '</table>';
-									//echo '( <a href="checklist.php"><b>'.$lang[42].'</b></a> ) ';
-									echo '( <a href="checklist.php"><b>Goto today!</b></a> ) ';
+									echo '( <a href="checklist.php"><b>' . $lang[42] . '</b></a> ) ';
 									# display the checklist
 									display_checklist($datum);
 								echo '</td>';
@@ -116,8 +111,7 @@ echo '<table>';
 						echo '</table>';
 					echo '</td>';
 					echo '<td valign="top">';
-						//echo '<font size="+2"><b>'.$lang[41].' ('.$datum.')?</b></font><br />';
-						echo '<font size="+2"><b>What has happened today ('.$datum.')?</b></font><br />';
+						echo '<font size="+2"><b>' . $lang[41] . ' ('.$datum.')?</b></font><br />';
 						if ( isset($_GET['id'])){
 							edit_form($_GET['act'],$_GET['id'],$current_user);
 						}

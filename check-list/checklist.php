@@ -4,10 +4,6 @@
 require_once(INCLUDE_DIR . 'class.plugin.php');
  
 
-// Include required modules from Check List Plugin
-require_once('config.php');
-
-
 // Define required variables for Plugin
 //define('CHECKLIST_TABLE_CHECKLIST',TABLE_PREFIX.'checklist');
 define('CHECKLIST_TABLE_CHECKLIST','checklist');
@@ -18,6 +14,13 @@ define('CHECKLIST_TABLE_ENTRIES','entries');
 define('PLUGINS_ROOT',INCLUDE_DIR.'plugins/');
 define('CHECKLIST_PLUGIN_ROOT',PLUGINS_ROOT.'check-list/');
 define('CHECKLIST_INCLUDE_DIR',CHECKLIST_PLUGIN_ROOT.'include/');
+
+
+// Include required modules from Check List Plugin
+require_once('config.php');
+require_once(CHECKLIST_INCLUDE_DIR.'lang_uk_en.php');
+require_once(CHECKLIST_INCLUDE_DIR.'lib.php');
+require_once(CHECKLIST_INCLUDE_DIR.'calendar.php');
 
 
 // Installer Class

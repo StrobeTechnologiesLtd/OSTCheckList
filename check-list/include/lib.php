@@ -1,10 +1,5 @@
 <?
-# load language file
-//include (CHECKLIST_INCLUDE_DIR."lang_".$locale.".php");
-
-
 function show_calendar($file, $year, $month) {
-	//global $lang;
 	# get current month from database and mark the dates that have entries
 	# select distinct date(datum) from entries where month(datum)=10 and year(datum)=2006;
 	$days=array();
@@ -22,7 +17,6 @@ function show_calendar($file, $year, $month) {
 }
 
 function numberOfCheckpoints() {
-	//global $lang;
 	# get the number of 
 	$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled != true AND header=0';
 	$result = db_query($query);
@@ -32,7 +26,6 @@ function numberOfCheckpoints() {
 }
 
 function totalnumberOfCheckpoints() {
-	//global $lang;
 	# get the number of 
 	$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST;
 	$result = db_query($query);
@@ -42,7 +35,6 @@ function totalnumberOfCheckpoints() {
 }
 
 function numberOfEnteredCheckpointsToday() {
-	//global $lang;
 	$query = 'SELECT count(distinct(ref)) AS entered FROM ' . CHECKLIST_TABLE_ENTRIES . ' WHERE date(datum) LIKE date(now())';
 	$result = db_query($query);
 	$row = db_fetch_array($result, MYSQL_ASSOC);
@@ -51,7 +43,6 @@ function numberOfEnteredCheckpointsToday() {
 }
 
 function numberOfChecks($period) {
-	//global $lang;
 	$query = 'SELECT count(*)  AS number FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE period='.$period.' AND header=0';
 	$result = db_query($query);
 	$row = db_fetch_array($result, MYSQL_ASSOC);
@@ -60,8 +51,6 @@ function numberOfChecks($period) {
 }
 
 function display_checklist($datum){
-	//global $lang;
-	
 	$vandaag=date("Y-m-d",time()); //vandaag is Dutch for today
 	# fill an array to use later
 	$ref=array();
@@ -144,7 +133,6 @@ function display_checklist($datum){
 							break;
 						case -1:
 						# this is the end of a menu
-							//print "</DIV>";	
 							print "<br>\n";
 							break;
 					}
@@ -155,16 +143,15 @@ function display_checklist($datum){
 }
 
 function display_datelog($datum) {
-	//global $lang;
+	global $lang;
+	
 	# this funrction display the entries of a certain date.
 	if ( strtotime($datum) != strtotime(date("Y-m-d",time())) ) {
 		print "<hr><font color='red'><b>";
-		//print $lang[43];
-		echo 'Items can no longer be added to this day!';
+		echo $lang[43];
 		print "</b></font><hr>\n";
 	}
 	if ( strlen($datum)<2 ) { $datum=date("Y-m-d",time()); }	
-	//$heading=$lang[34];
 	$heading=array(0=>"Daily",1=>"Weekly",2=>"Monthly");
 	for ($period=0;$period<=2;$period++) {
 		switch ($period) {
@@ -209,7 +196,6 @@ function display_datelog($datum) {
 }
 
 function edit_form($act,$id,$current_user) {
-	//global $lang;
 	if ( isset($act)  ) {
 		$query = 'SELECT * FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE id='.$id.' ';
 		$result = db_query($query);
@@ -229,7 +215,6 @@ function edit_form($act,$id,$current_user) {
 }
 
 function store_form($current_user,$act,$id,$logmessage,$status) {
-	//global $lang;
 	if ( ($act==2) ) {
 		#storage of data
 		$escaped_logmessage = mysql_escape_string($logmessage);
@@ -237,7 +222,6 @@ function store_form($current_user,$act,$id,$logmessage,$status) {
 		$query .= $current_user."',now(),".$id.",'".$escaped_logmessage."',".$status.")\n";
 		$result = db_query($query);
 	} else {
-		//$errormsg .= $lang[1];
 		$errormsg .= 'Not enough text has been entered!';
 	}
 }

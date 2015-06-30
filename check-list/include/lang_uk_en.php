@@ -1,12 +1,9 @@
 <?php
 # English language file
-# Version: $Id: lang_uk_en.php,v 1.6 2007/09/12 18:47:14 batenj Exp $
-# Author: Jeroen Baten (jbaten@i2rs.nl)
-# Copyright 2007 i2rs
+# Version: 1.0
 
 global $month,$lang,$locale;
 
-//setlocale(LC_TIME, 'nl_NL'); #dutch
 setlocale(LC_TIME, 'uk_en');
 $monthstr=array("Jan","Feb","Mar","Apr","Mai","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
 $statstr=array(-1 => "Error",0 => "Neutral",1 => "Good",2 => "Attention");
@@ -53,6 +50,5 @@ $lang[40]="<- to be entered ->";
 $lang[41]="What has happened today";
 $lang[42]="Goto today!";
 $lang[43]="Items can no longer be added to this day!";
-
 
 ?>

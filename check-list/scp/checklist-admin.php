@@ -39,10 +39,6 @@ $nav->addSubMenu(array('desc'=>'About',
 // *** Check List Plugin - Includes / Variables
 // ********************************************
 $errormsg="";
-
-//include (CHECKLIST_INCLUDE_DIR.'settings.php');
-include (CHECKLIST_INCLUDE_DIR.'lib.php');
-require (CHECKLIST_INCLUDE_DIR.'calendar.php');
 	
 # initialisatie: 
 $datum='';
@@ -68,7 +64,7 @@ if (   isset($warning)) { $status=2;}
 
 
 function get_row($id) {
-	$query = "SELECT * FROM checklist where id=".$id."";
+	$query = "SELECT * FROM " . CHECKLIST_TABLE_CHECKLIST . " WHERE id=".$id."";
 	$result = db_query($query);
 	$row = db_fetch_array($result, MYSQL_ASSOC);
 	return $row;
@@ -76,6 +72,7 @@ function get_row($id) {
 
 function show_number($id,$value,$field) {
 	global $lang;
+	
 	print "<td align=\"middle\" nowrap>";
 	print "<a href='checklist-admin.php?action=u-".$field."&id=".$id."'>^</a>"; 
 	if ( $field == "period" ) { $tekst2=$lang[34][$value];} else { $tekst2=$value;}
@@ -86,14 +83,15 @@ function show_number($id,$value,$field) {
 
 function incr_field($id,$field) {
 	global $lang;
+	
 	$max=1000;
 	if ( $field == "period" ) { $max=count($lang[34])-1; }
-	$query = "update checklist set ".$field."=".$field."+1 where id=".$id." and ".$field." < ".$max;
+	$query = "UPDATE " . CHECKLIST_TABLE_CHECKLIST . " SET ".$field."=".$field."+1 WHERE id=".$id." AND ".$field." < ".$max;
 	$result = db_query($query);
 }
+
 function decr_field($id,$field) {
-	global $lang;
-	$query = "update checklist set ".$field."=".$field."-1 where id=".$id." and ".$field." > 0";
+	$query = "UPDATE " . CHECKLIST_TABLE_CHECKLIST . " SET ".$field."=".$field."-1 WHERE id=".$id." AND ".$field." > 0";
 	$result = db_query($query);
 }
 
@@ -102,14 +100,12 @@ function move_item_up($id) {
 	# find the id of the item before us
 	# since we do not display up or down arrows next to first and last entry we don't check this again here :-)
 	$row1=get_row($id);
-	$query = "SELECT * FROM checklist where orde=".($row1["orde"]-1)." order by orde limit 1";
+	$query = "SELECT * FROM " . CHECKLIST_TABLE_CHECKLIST . " WHERE orde=".($row1["orde"]-1)." ORDER BY orde LIMIT 1";
 	$result = db_query($query);
 	$row2 = db_fetch_array($result, MYSQL_ASSOC);
-	echo "id ".$row1["id"]." with orde ".$row1["orde"]." will become ".$row2["orde"]."<br>\n";
-	echo "id ".$row2["id"]." with orde ".$row2["orde"]." will become ".$row1["orde"]."<br>\n";
-	$query = "update checklist set orde=".$row2["orde"]." where id=".$row1["id"]."";
+	$query = "UPDATE " . CHECKLIST_TABLE_CHECKLIST . " SET orde=".$row2["orde"]." WHERE id=".$row1["id"]."";
 	$result = db_query($query);
-	$query = "update checklist set orde=".$row1["orde"]." where id=".$row2["id"]."";
+	$query = "UPDATE " . CHECKLIST_TABLE_CHECKLIST . " SET orde=".$row1["orde"]." WHERE id=".$row2["id"]."";
 	$result = db_query($query);
 }
 
@@ -118,44 +114,45 @@ function move_item_down($id) {
 	# find the id of the item after us
 	# since we do not display up or down arrows next to first and last entry we don't check this again here :-)
 	$row1=get_row($id);
-	$query = "SELECT * FROM checklist where orde=".($row1["orde"]+1)." order by orde limit 1";
+	$query = "SELECT * FROM " . CHECKLIST_TABLE_CHECKLIST . " WHERE orde=".($row1["orde"]+1)." ORDER BY orde LIMIT 1";
 	$result = db_query($query);
 	$row2 = db_fetch_array($result, MYSQL_ASSOC);
-	$query = "update checklist set orde=".$row2["orde"]." where id=".$row1["id"]."";
+	$query = "UPDATE " . CHECKLIST_TABLE_CHECKLIST . " SET orde=".$row2["orde"]." WHERE id=".$row1["id"]."";
 	$result = db_query($query);
-	$query = "update checklist set orde=".$row1["orde"]." where id=".$row2["id"]."";
+	$query = "UPDATE " . CHECKLIST_TABLE_CHECKLIST . " SET orde=".$row1["orde"]." WHERE id=".$row2["id"]."";
 	$result = db_query($query);
 }
 
 function change_period($id,$value) {
 	# change the period of the item.
-	$query = "update checklist set period=".$value." where id=".$id."";
+	$query = "UPDATE " . CHECKLIST_TABLE_CHECKLIST . " SET period=".$value." WHERE id=".$id."";
 	$result = db_query($query);
 }
 
 function update_text($id,$value) {
 	# change the text of the item.
-	$query = "update checklist set tekst='".$value."' where id=".$id."";
+	$query = "UPDATE " . CHECKLIST_TABLE_CHECKLIST . " SET tekst='".$value."' WHERE id=".$id."";
 	$result = db_query($query);
 }
 
 function update_disabled($id,$value,$field) {
 	# change the text of the item.
 	$value=strval($value);
-	$query = "update checklist set ".$field."='".$value."' where id=".$id."";
+	$query = "UPDATE " . CHECKLIST_TABLE_CHECKLIST . " SET ".$field."='".$value."' WHERE id=".$id."";
 	$result = db_query($query);
 }
 
 function insert_new_item() {
 	$orde_no = totalnumberOfCheckpoints() + 1;
-	$query = "insert into checklist (orde) values (".$orde_no.")";
-	#INSERT INTO table (a,b,c) VALUES (1,2,3) ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id), c=3;
+	$query = "INSERT INTO " . CHECKLIST_TABLE_CHECKLIST . " (orde) VALUES (".$orde_no.")";
 	$result = db_query($query);
 }
 
 function checklist_admin($cid,$action,$value) {
 	global $lang;
-	print "<a href='checklist-admin.php'>".$lang[38]."</a> / <a href='checklist-admin.php?action=new'>".$lang[39]."</a><hr>\n";
+	
+	#echo "id: ".$id.", action=".$action.", value=".$value."<br>";
+	print "<a href='checklist-admin.php'>" . $lang[38] . "</a> / <a href='checklist-admin.php?action=new'>" . $lang[39] . "</a><hr>\n";
 	# get the things to check from the database
 	# if an entrie already exists display it in green, else in red.
 	# extra: display split between parts of the day
@@ -193,7 +190,7 @@ function checklist_admin($cid,$action,$value) {
 	print "<table cellspacing=5 cellpadding=5 border=0>";
 
 	# display checklist items with links.
-	$query = "SELECT * FROM checklist ORDER BY orde";
+	$query = "SELECT * FROM " . CHECKLIST_TABLE_CHECKLIST . " ORDER BY orde";
 	$result = db_query($query);
 	$rows = mysql_num_rows($result);
 	print "<tr>";
@@ -273,7 +270,6 @@ function checklist_admin($cid,$action,$value) {
 			
 		# part of the day
 		show_number($id,$row["dagdeel"],"dagdeel");
-        #$print "<td align=\"middle\" nowrap>".$row["dagdeel"]."</td>\n";
 
 		print "</tr>";
 			
@@ -282,7 +278,7 @@ function checklist_admin($cid,$action,$value) {
 		print "<hr>";
 		# display edit form to change the parts of the day. TODO :-)
 		print "<table cellspacing=5 cellpadding=5 border=0>";
-		$query = "SELECT * FROM dagdelen ORDER BY id";
+		$query = "SELECT * FROM " . CHECKLIST_TABLE_DAGDELEN . " ORDER BY id";
 		$result = db_query($query);
 		$rows = mysql_num_rows($result);
 		print "<tr>";
@@ -350,9 +346,7 @@ function toggleLayer(whichLayer) {
 require_once(STAFFINC_DIR.'header.inc.php');
 
 print "<table>";
-print '<tr><td class="border" valign="top"><!-- <h1>Menu</h1> -->';
-print "<!-- Gebruiker <? print $current_user; ?><br> -->";
-print "<!-- <a href='checklist.php?f=1'>Nieuw</a><br> -->";
+print '<tr><td class="border" valign="top">';
 print "</td>";
 
 print "<hr>";
@@ -361,11 +355,10 @@ print "<hr>";
 	# first row contains calendar
 	$pn = array('&laquo;'=>'./checklist.php?vorige', '&raquo;'=>'./checklist.php?volgende'); 
 	print "<tr><td valign='top'>\n";
-	//setlocale(LC_TIME, 'nl_NL'); #dutch 
-	setlocale(LC_TIME, 'uk_en');
 	$time = time(); 
 	$today = date('j',$time); 
 	$days = array($today=>array(NULL,NULL,"<span style='to_late'>".$today."</span>")); 
+	# display checklist items
 	display_checklist($datum);
 	print "</td>";
 	print "<td valign='top'>";

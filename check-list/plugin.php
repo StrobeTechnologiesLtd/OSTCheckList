@@ -11,7 +11,7 @@
 set_include_path(get_include_path().PATH_SEPARATOR.dirname(__file__).'/include');
 return array(
     'id' =>             'strobeit:check',
-    'version' =>        '0.0.7',
+    'version' =>        '0.0.8',
     'name' =>           'Check List',
     'author' =>         'Robin Toy',
     'description' =>    'Provides the ability to create daily, monthly & yearly tasks to be performed and results recorded.',
