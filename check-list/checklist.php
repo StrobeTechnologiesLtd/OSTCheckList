@@ -5,12 +5,9 @@ require_once(INCLUDE_DIR . 'class.plugin.php');
  
 
 // Define required variables for Plugin
-//define('CHECKLIST_TABLE_CHECKLIST',TABLE_PREFIX.'checklist');
-define('CHECKLIST_TABLE_CHECKLIST','checklist');
-//define('CHECKLIST_TABLE_DAGDELEN',TABLE_PREFIX.'dagdelen');
-define('CHECKLIST_TABLE_DAGDELEN','dagdelen');
-//define('CHECKLIST_TABLE_ENTRIES',TABLE_PREFIX.'entries');
-define('CHECKLIST_TABLE_ENTRIES','entries');
+define('CHECKLIST_TABLE_CHECKLIST',TABLE_PREFIX.'checklist');
+define('CHECKLIST_TABLE_DAGDELEN',TABLE_PREFIX.'checklist_dagdelen');
+define('CHECKLIST_TABLE_ENTRIES',TABLE_PREFIX.'checklist_entries');
 define('PLUGINS_ROOT',INCLUDE_DIR.'plugins/');
 define('CHECKLIST_PLUGIN_ROOT',PLUGINS_ROOT.'check-list/');
 define('CHECKLIST_INCLUDE_DIR',CHECKLIST_PLUGIN_ROOT.'include/');
