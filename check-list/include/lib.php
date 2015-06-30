@@ -1,6 +1,6 @@
 <?
 # load language file
-include (CHECKLIST_INCLUDE_DIR."lang_".$locale.".php");
+//include (CHECKLIST_INCLUDE_DIR."lang_".$locale.".php");
 
 
 function show_calendar($file, $year, $month) {
@@ -60,7 +60,7 @@ function numberOfChecks($period) {
 }
 
 function display_checklist($datum){
-	global $lang; //?????
+	//global $lang;
 	
 	$vandaag=date("Y-m-d",time()); //vandaag is Dutch for today
 	# fill an array to use later
@@ -157,15 +157,17 @@ function display_checklist($datum){
 }
 
 function display_datelog($datum) {
-	global $lang;
+	//global $lang;
 	# this funrction display the entries of a certain date.
 	if ( strtotime($datum) != strtotime(date("Y-m-d",time())) ) {
 		print "<hr><font color='red'><b>";
-		print $lang[43];
+		//print $lang[43];
+		echo 'Items can no longer be added to this day!';
 		print "</b></font><hr>\n";
 	}
 	if ( strlen($datum)<2 ) { $datum=date("Y-m-d",time()); }	
-	$heading=$lang[34];
+	//$heading=$lang[34];
+	$heading=array(0=>"Daily",1=>"Weekly",2=>"Monthly");
 	for ($period=0;$period<=2;$period++) {
 		switch ($period) {
 			case 0:
@@ -229,7 +231,7 @@ function edit_form($act,$id,$current_user) {
 }
 
 function store_form($current_user,$act,$id,$logmessage,$status) {
-	global $lang;
+	//global $lang;
 	if ( ($act==2) ) {
 		#storage of data
 		$escaped_logmessage = mysql_escape_string($logmessage);
@@ -237,7 +239,8 @@ function store_form($current_user,$act,$id,$logmessage,$status) {
 		$query .= $current_user."',now(),".$id.",'".$escaped_logmessage."',".$status.")\n";
 		$result = db_query($query);
 	} else {
-		$errormsg .= $lang[1];
+		//$errormsg .= $lang[1];
+		$errormsg .= 'Not enough text has been entered!';
 	}
 }
 

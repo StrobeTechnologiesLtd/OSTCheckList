@@ -137,7 +137,8 @@ echo '<table>';
 											echo '</td>';
 										echo '</tr>';
 									echo '</table>';
-									echo '( <a href="checklist.php"><b>'.$lang[42].'</b></a> ) ';
+									//echo '( <a href="checklist.php"><b>'.$lang[42].'</b></a> ) ';
+									echo '( <a href="checklist.php"><b>Goto today!</b></a> ) ';
 									# display the checklist
 									//display_checklist($datum,$wikiurl,$uses_wiki);
 									display_checklist($datum);
@@ -146,7 +147,8 @@ echo '<table>';
 						echo '</table>';
 					echo '</td>';
 					echo '<td valign="top">';
-						echo '<font size="+2"><b>'.$lang[41].' ('.$datum.')?</b></font><br />';
+						//echo '<font size="+2"><b>'.$lang[41].' ('.$datum.')?</b></font><br />';
+						echo '<font size="+2"><b>What has happened today ('.$datum.')?</b></font><br />';
 						if ( isset($_GET['id'])){
 							edit_form($_GET['act'],$_GET['id'],$current_user);
 						}
