@@ -79,7 +79,6 @@ function display_checklist($datum){
 	$query .= " AND (    ( period=0 AND date(datum)=date('".$datum."')  ) ";
 	$query .= " OR ( period=1 AND week(date(datum))=week(date('".$datum."')) )";
 	$query .= " OR ( period=2 AND month(date(datum))=month(date('".$datum."')) )    )";
-	#print "\n<!-- $query -->\n";
 	$result = db_query($query);
 	while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
 		$ref[$row["ref"]]=1;
@@ -92,7 +91,6 @@ function display_checklist($datum){
 	$result = db_query($query);
 	$oudedagdeel=1;
 		echo '<tr>';
-			//echo '<td valign="middle" nowrap>';
 			echo '<td valign="middle">';
 				while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
 					if ($oudedagdeel < $row["dagdeel"] ) {

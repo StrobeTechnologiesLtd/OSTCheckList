@@ -38,11 +38,9 @@ $nav->addSubMenu(array('desc'=>'About',
 				
 // *** Check List Plugin - Includes / Variables
 // ********************************************
-//include (CHECKLIST_INCLUDE_DIR.'settings.php');
 include (CHECKLIST_INCLUDE_DIR.'lib.php');
 require (CHECKLIST_INCLUDE_DIR.'calendar.php');
 
-//extract($_REQUEST);
 $num_columns=6;
 $status=0;
 
@@ -77,33 +75,6 @@ if ($_POST['act']==2) {
 
 // *** Check List Plugin - Display
 // *******************************
-/*$ost->addExtraHeader("<script type='text/javascript'>
-<!--
-function switchMenu(obj) {
-        var el = document.getElementById(obj);
-        if ( el.style.display != 'none' ) {
-                el.style.display = 'none';
-        }
-        else {
-                el.style.display = '';
-        }
-}
-//-->
-</script>");
-$ost->addExtraHeader("<script language='javascript'>
-function toggleLayer(whichLayer) {
-	if (document.getElementById) {
-		var style2 = document.getElementById(whichLayer).style;
-		style2.display = style2.display? '':'block';
-	} else if (document.all) {
-		var style2 = document.all[whichLayer].style;
-		style2.display = style2.display? '':'block';
-	} else if (document.layers) {
-		var style2 = document.layers[whichLayer].style;
-		style2.display = style2.display? '':'block';
-	}
-}
-</script>");*/
 $ost->addExtraHeader('<link rel="stylesheet" type="text/css" href="checklist.css" />');
 
 require_once(STAFFINC_DIR.'header.inc.php');
@@ -118,13 +89,9 @@ echo '<table>';
 			echo '<table>';
 				echo '<tr>';
 					echo '<td>';
-						# first row contains calendar
-//$pn = array('&laquo;'=>'./checklist.php?vorige', '&raquo;'=>'./checklist.php?volgende'); 
 						echo '<table>';
 							echo '<tr>';
 								echo '<td valign="top">'; 
-//$days = array($today=>array(NULL,NULL,"<span style='to_late'>".$today."</span>")); 
-									# last 2 on next line is # char for columnname
 									echo '<table>';
 										echo '<tr>';
 											echo '<td>';
@@ -132,8 +99,6 @@ echo '<table>';
 											echo '</td>';
 											echo '<td valign="top" align="center">';
 												echo '<br><img src="check-list-img/Vista-folder_green.png"><br>';
-												//show_percentage($datum);
-												//echo '<br />';
 												daily_percent($datum);
 												echo '<br />';
 												weekly_percent($datum);
@@ -145,7 +110,6 @@ echo '<table>';
 									//echo '( <a href="checklist.php"><b>'.$lang[42].'</b></a> ) ';
 									echo '( <a href="checklist.php"><b>Goto today!</b></a> ) ';
 									# display the checklist
-									//display_checklist($datum,$wikiurl,$uses_wiki);
 									display_checklist($datum);
 								echo '</td>';
 							echo '</tr>';
@@ -168,7 +132,6 @@ echo '<table>';
 	echo '</tr>';
 echo '</table>';
 
-//mysql_close($link);
 
 require_once(STAFFINC_DIR.'footer.inc.php');
 // *******************************
