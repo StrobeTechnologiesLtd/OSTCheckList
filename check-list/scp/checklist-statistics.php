@@ -28,21 +28,21 @@ $nav->addSubMenu(array('desc'=>'Admin',
 						'href'=>'checklist-admin.php',
 						'iconclass'=>'closedTickets'
 				));
+$nav->addSubMenu(array('desc'=>'About',
+						'title'=>'About Check List',
+						'href'=>'checklist-about.php',
+						'iconclass'=>'closedTickets'
+				));
 // **********************************
 
 
 // *** Check List Plugin - Includes / Variables
 // ********************************************
-$Revision="";
-$Date="";
-$version="Version$Revision: 0.0.2 $ (Date$Date: 29/06/2015 07:31:00 $)";
-$version=str_replace("$", "",$version);
 $errormsg="";
 
 global $errormsg;
-global $version;
 
-include (CHECKLIST_INCLUDE_DIR.'settings.php');
+//include (CHECKLIST_INCLUDE_DIR.'settings.php');
 include (CHECKLIST_INCLUDE_DIR.'lib.php');
 require (CHECKLIST_INCLUDE_DIR.'calendar.php');
 
@@ -118,7 +118,6 @@ if ( ! isset($year) ) { $year=date("Y"); }
 		print "</tr>\n";
 		print "</tr></td></table></td></tr>";
 		print "</table>";
-		print "<font size='1'>".$version."</font>";
 		//print "</body>";
 		//print "</html>";
 	}
@@ -376,7 +375,7 @@ require_once(STAFFINC_DIR.'header.inc.php');
 				break;
 		}
 	}
-	mysql_close($link);
+	//mysql_close($link);
 	
 require_once(STAFFINC_DIR.'footer.inc.php');
 ?>

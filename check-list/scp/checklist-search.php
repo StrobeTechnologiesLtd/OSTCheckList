@@ -28,21 +28,20 @@ $nav->addSubMenu(array('desc'=>'Admin',
 						'href'=>'checklist-admin.php',
 						'iconclass'=>'closedTickets'
 				));
+$nav->addSubMenu(array('desc'=>'About',
+						'title'=>'About Check List',
+						'href'=>'checklist-about.php',
+						'iconclass'=>'closedTickets'
+				));
 // **********************************
 
 
 // *** Check List Plugin - Includes / Variables
 // ********************************************
-$Revision="";
-$Date="";
 global $errormsg;
-global $version;
 $errormsg="";
-$version="Version$Revision: 0.0.2 $ (Date$Date: 29/06/2015 07:31:00 $)";
-# de volgende $ is een RCS keywordbegin en geen php variabele!
-$version=str_replace("$", "",$version);
 
-include (CHECKLIST_INCLUDE_DIR.'settings.php');
+//include (CHECKLIST_INCLUDE_DIR.'settings.php');
 include (CHECKLIST_INCLUDE_DIR.'lib.php');
 require (CHECKLIST_INCLUDE_DIR.'calendar.php');
 
@@ -119,7 +118,6 @@ function display_page($datum,$month,$year,$searchstr) {
 	# doe de search query
 	print "</tr></td></table></td></tr>";
 	print "</table>";
-	print "<font size='1'>".$version."</font>";
 	//print "</body>";
 	//print "</html>";
 }
@@ -166,7 +164,7 @@ function search_function($searchstr) {
 require_once(STAFFINC_DIR.'header.inc.php');
 
 display_page($datum,$month,$year,$searchstr); 
-mysql_close($link);
+//mysql_close($link);
 
 require_once(STAFFINC_DIR.'footer.inc.php');
 ?>

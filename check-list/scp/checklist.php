@@ -8,24 +8,29 @@ require('staff.inc.php');
 // *** osTicket - Menu and Navigation
 // **********************************
 $nav->setTabActive('apps');
-$nav->addSubMenu(array('desc'=>'Statistics',
+/*$nav->addSubMenu(array('desc'=>'Statistics',
 						'title'=>'Check List Statistics',
 						'href'=>'checklist-statistics.php',
 						'iconclass'=>'closedTickets'
-				));
-$nav->addSubMenu(array('desc'=>'Reports',
+				));*/
+/*$nav->addSubMenu(array('desc'=>'Reports',
 						'title'=>'Check List Reports',
 						'href'=>'checklist-reports.php',
 						'iconclass'=>'closedTickets'
-				));
-$nav->addSubMenu(array('desc'=>'Search',
+				));*/
+/*$nav->addSubMenu(array('desc'=>'Search',
 						'title'=>'Check List Search',
 						'href'=>'checklist-search.php',
 						'iconclass'=>'closedTickets'
-				));
+				)); */
 $nav->addSubMenu(array('desc'=>'Admin',
 						'title'=>'Check List Admin',
 						'href'=>'checklist-admin.php',
+						'iconclass'=>'closedTickets'
+				));
+$nav->addSubMenu(array('desc'=>'About',
+						'title'=>'About Check List',
+						'href'=>'checklist-about.php',
 						'iconclass'=>'closedTickets'
 				));
 // **********************************
@@ -33,7 +38,7 @@ $nav->addSubMenu(array('desc'=>'Admin',
 				
 // *** Check List Plugin - Includes / Variables
 // ********************************************
-include (CHECKLIST_INCLUDE_DIR.'settings.php');
+//include (CHECKLIST_INCLUDE_DIR.'settings.php');
 include (CHECKLIST_INCLUDE_DIR.'lib.php');
 require (CHECKLIST_INCLUDE_DIR.'calendar.php');
 
@@ -163,7 +168,7 @@ echo '<table>';
 	echo '</tr>';
 echo '</table>';
 
-mysql_close($link);
+//mysql_close($link);
 
 require_once(STAFFINC_DIR.'footer.inc.php');
 // *******************************
