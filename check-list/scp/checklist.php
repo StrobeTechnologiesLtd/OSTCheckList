@@ -41,18 +41,24 @@ $nav->addSubMenu(array('desc'=>'About',
 $num_columns=6;
 $status=0;
 
+## Check to see if full date passed via GET or not, if not get todays date
 if ( strlen($_GET['datum'])<2 ) { 
 	$datum=date("Y-m-d",time()); 
 } else {
 	$datum = $_GET['datum'];
 	list($year,$month, $day) = split('[/.-]', $_GET['datum']);
-}	
+}
+
+## Work out if month or year was passed via GET and fill in month id no date or GET sent
+if (isset($_GET['month']))  { $month=$_GET['month']; }
+if (isset($_GET['year']))  { $year=$_GET['year']; }
 if ( ! isset($month) ) { $month=date("m"); }
 if ( ! isset($year) )  { $year=date("Y"); }
 
-if (   isset($_POST['not_ok']))  { $status=-1;}
-if (   isset($_POST['ok']))      { $status=1;}
-if (   isset($_POST['warning'])) { $status=2;}
+# Work out if comments / update posted
+if (isset($_POST['not_ok']))  { $status=-1;}
+if (isset($_POST['ok']))      { $status=1;}
+if (isset($_POST['warning'])) { $status=2;}
 
 $time = time(); 
 $today = date('j',$time);

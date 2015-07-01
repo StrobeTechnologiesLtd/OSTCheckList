@@ -2,8 +2,10 @@
 
 ## About
 **Developer:** Strobe Technologies Ltd
-**Version:** Alpha Release 0.0.1
-**Date:** 28/06/2015
+
+**Version:** Beta Release 0.1.1
+
+**Date:** 01/07/2015
 
 ## Introduction
 This is a plugin designed for osTicket (http://www.osticket.com/), this plugin adds
@@ -15,6 +17,5 @@ the following features to osTicket: -
 ## Installation Instructions
 Please see osTicket installation instructions.....
 
-This is still an alpha release and does not yet use osTicket DB login details
-and not yet using the dispatcher to create correct scp paths, so these files also need to
+This is still a Beta release and does not yet use the dispatcher to create correct scp paths, so these files also need to
 be copied to the scp folder

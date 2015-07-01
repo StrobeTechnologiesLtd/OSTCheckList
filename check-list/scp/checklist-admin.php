@@ -44,23 +44,9 @@ $errormsg="";
 $datum='';
 $act='';
 
-extract($_REQUEST);
+extract($_REQUEST); // Extract vars from GET to just a normal var, not good and needs updating
 $num_columns=6;
 $current_user = $thisstaff->getFirstName() . ' ' . $thisstaff->getLastName();
-if ( strlen($current_user)<2 and isset($user) ) {
-	$current_user=$user;
-}
-if ( strlen($datum)<2 ) { 
-	$datum=date("Y-m-d",time()); 
-} else {
-	list($year,$month, $day) = split('[/.-]', $datum);
-}	
-if ( ! isset($month) ) { $month=date("m"); }
-if ( ! isset($year) )  { $year=date("Y"); }
-$status=0;
-if (   isset($not_ok))  { $status=-1;}
-if (   isset($ok))      { $status=1;}
-if (   isset($warning)) { $status=2;}
 
 
 function get_row($id) {
