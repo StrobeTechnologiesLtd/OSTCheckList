@@ -1,13 +1,18 @@
 <?php
 
 //	Include required modules from osTicket
-require_once(INCLUDE_DIR . 'class.plugin.php');
+require_once(INCLUDE_DIR . 'class.plugin.php');				#Required to extend / make as plugin
+/*require_once (INCLUDE_DIR . 'class.signal.php');			#Required to register signals / callbacks for routing
+require_once (INCLUDE_DIR . 'class.dispatcher.php');		#Required to allow URL direction*/
  
 
 // Define required variables for Plugin
+#Tables used for SQL
 define('CHECKLIST_TABLE_CHECKLIST',TABLE_PREFIX.'checklist');
 define('CHECKLIST_TABLE_DAGDELEN',TABLE_PREFIX.'checklist_dagdelen');
 define('CHECKLIST_TABLE_ENTRIES',TABLE_PREFIX.'checklist_entries');
+
+#Directories / Paths
 define('PLUGINS_ROOT',INCLUDE_DIR.'plugins/');
 define('CHECKLIST_PLUGIN_ROOT',PLUGINS_ROOT.'check-list/');
 define('CHECKLIST_INCLUDE_DIR',CHECKLIST_PLUGIN_ROOT.'include/');
@@ -46,7 +51,20 @@ class CheckListPlugin extends Plugin {
 		if ($config->get ( 'checklist_frontend_enable' )) {
 			$this->createStaffMenu ();
 		}
+		
+		/*Signal::connect ( 'apps.scp', array (
+				'CheckListPlugin',
+				'callbackDispatch' 
+		) );*/
     }
+	
+	/*static public function callbackDispatch($object, $data) {
+		//URL Patterns and Controllers
+		$media_url = url ( '^/equipment.*assets/', patterns ( 'controller\MediaController', url_get ( '^(?P<url>.*)$', 'defaultAction' ) ) );
+		
+		//Stuff information into dispatcher
+		$object->append ( $media_url );
+	}*/
  
  
 	/**
@@ -57,6 +75,7 @@ class CheckListPlugin extends Plugin {
 				iconclass => 'faq-categories' 
 		) );
 	}
+
 	
 	/**
 	 * Creates menu links in the Admin backend.

@@ -3,7 +3,7 @@
 ## About
 **Developer:** Strobe Technologies Ltd
 
-**Version:** Beta Release 0.1.1
+**Version:** Beta Release 0.1.2
 
 **Date:** 01/07/2015
 

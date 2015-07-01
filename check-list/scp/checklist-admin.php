@@ -303,28 +303,20 @@ function toggleLayer(whichLayer) {
 require_once(STAFFINC_DIR.'header.inc.php');
 
 print "<table>";
-print '<tr><td class="border" valign="top">';
-print "</td>";
-
-print "<hr>";
-	print "<td valign='top'><table><tr><td><!-- <H1>Main</h1><p> -->\n";
-	if ( strlen($datum)<2 ) { $datum=date("Y-m-d",time()); }
-	# first row contains calendar
-	$pn = array('&laquo;'=>'./checklist.php?vorige', '&raquo;'=>'./checklist.php?volgende'); 
-	print "<tr><td valign='top'>\n";
-	$time = time(); 
-	$today = date('j',$time); 
-	$days = array($today=>array(NULL,NULL,"<span style='to_late'>".$today."</span>")); 
-	# display checklist items
-	display_checklist($datum);
-	print "</td>";
-	print "<td valign='top'>";
-	checklist_admin($_GET['id'],$action,$value);
-	print "<font color='red'>".$errormsg."</font>\n";
-	print "</td>";
-	print "</tr>\n";
-	print "</tr></td></table></td></tr>";
-	print "</table>";
+	print '<tr>';;
+	print "<hr>";
+		print "<td valign='top'>";
+			print "<table>";
+				print "<tr>";
+					print "<td valign='top'>";
+						checklist_admin($_GET['id'],$action,$value);
+						print "<font color='red'>".$errormsg."</font>";
+					print "</td>";
+				print "</tr>";
+			print "</table>";
+		print "</td>";
+	print "</tr>";
+print "</table>";
 
 require_once(STAFFINC_DIR.'footer.inc.php');	
 ?>
