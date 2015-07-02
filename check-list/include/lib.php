@@ -76,7 +76,7 @@ function display_checklist($datum){
 
 
 	# display checklist with link if applicable.
-	$query = 'SELECT * FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled != true ORDER BY dagdeel,orde';
+	$query = 'SELECT * FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled != true ORDER BY orde';
 	$result = db_query($query);
 	$oudedagdeel=1;
 		echo '<tr>';
