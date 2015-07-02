@@ -41,7 +41,7 @@ $lang[31]="(This check has been cancelled but still has some old entries)";
 $lang[32]="Status";
 $lang[33]="Admin";
 $lang[34]=array(0=>"Daily",1=>"Weekly",2=>"Monthly");
-$lang[35]=array(0=>"ID",1=>"Order",2=>"Menu ID",3=>"Indent Level",4=>"Header",5=>"Period",6=>"Description",7=>"Disabled");
+$lang[35]=array(0=>"ID",1=>"Order",2=>"Menu ID",3=>"Indent Level",4=>"Header",5=>"Period",6=>"Description",7=>"Disabled", 8=>"Start Date");
 $lang[36]="TAKE NOTE: This change also affects the interpretation of historical data. If you want to disable this item, then do so.";
 //$lang[37]=array(0=>"id",1=>"number",2=>"Start time",3=>"End time");
 $lang[38]="Reload page";

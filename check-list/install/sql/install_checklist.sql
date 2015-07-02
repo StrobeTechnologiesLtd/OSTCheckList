@@ -13,11 +13,11 @@ CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%checklist` (
   `period` int(11) NOT NULL default '0',
   `tekst` varchar(250) default NULL,
   `disabled` int(11) NOT NULL default '0',
-  `dagdeel` int(11) default NULL,
+  `start` date NOT NULL,
+  `help` text NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `id` (`id`),
   KEY `orde` (`orde`),
-  KEY `dagdeel` (`dagdeel`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1$
 
 CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%checklist_entries` (

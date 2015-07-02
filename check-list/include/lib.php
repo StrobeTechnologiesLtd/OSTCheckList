@@ -228,7 +228,8 @@ function store_form($current_user,$act,$id,$logmessage,$status) {
 
 function daily_percent($date) {
 	// Get Daily total of checks to perform
-	$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled !=true AND header=0 AND period=0';
+	//$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled !=true AND header=0 AND period=0';
+	$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled !=true AND header=0 AND period=0 AND date(start) <= date("'.$date.'")';
 	$result = db_query($query);
 	$row = db_fetch_array($result, MYSQL_ASSOC);
 	$total=$row["total"];
@@ -245,7 +246,8 @@ function daily_percent($date) {
 
 function weekly_percent($date) {
 	// Get Weekly total of checks to perform
-	$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled !=true AND header=0 AND period=1';
+	//$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled !=true AND header=0 AND period=1';
+	$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled !=true AND header=0 AND period=1 AND date(start) <= date("'.$date.'")';
 	$result = db_query($query);
 	$row = db_fetch_array($result, MYSQL_ASSOC);
 	$total=$row["total"];
@@ -262,7 +264,8 @@ function weekly_percent($date) {
 
 function monthly_percent($date) {
 	// Get Monthly total of checks to perform
-	$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled !=true AND header=0 AND period=2';
+	//$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled !=true AND header=0 AND period=2';
+	$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled !=true AND header=0 AND period=2 AND date(start) <= date("'.$date.'")';
 	$result = db_query($query);
 	$row = db_fetch_array($result, MYSQL_ASSOC);
 	$total=$row["total"];
