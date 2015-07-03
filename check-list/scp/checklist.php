@@ -78,8 +78,29 @@ if ($_POST['act']==2) {
 // *** Check List Plugin - Display
 // *******************************
 $ost->addExtraHeader('<link rel="stylesheet" type="text/css" href="checklist.css" />');
+$ost->addExtraHeader('<link rel="stylesheet" type="text/css" href="css-pop.css" />');
+$ost->addExtraHeader('<script type="text/javascript" src="css-pop.js"></script>');
+$ost->addExtraHeader("<SCRIPT type='text/javascript'>
+<!--
+function changeSpanText(InnerText) { 
+	document.getElementById('helpwords').innerText = InnerText;
+	popup('popUpDiv')
+} 
+//-->
+</SCRIPT>");
 
 require_once(STAFFINC_DIR.'header.inc.php');
+
+echo '<!--POPUP-->';    
+echo '<div id="blanket" style="display:none;"></div>';
+echo '<div id="popUpDiv" style="display:none;">';
+	echo '<h2>Check List Item Help</h2>';
+	echo '<br />';
+	echo '<span id="helpwords"></span>';
+    echo '<a href="#" onclick="popup(\'popUpDiv\')" >Click to Close Help</a>';
+echo '</div>';
+//echo '<a href="#" onclick="popup(\'popUpDiv\')">Click to Open CSS Pop Up</a>';
+echo '<!-- / POPUP-->';
 
 echo '<table>';
 	echo '<tr>';

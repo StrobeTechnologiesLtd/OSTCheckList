@@ -78,14 +78,14 @@ function display_checklist($datum){
 	# display checklist with link if applicable.
 	$query = 'SELECT * FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled != true ORDER BY orde';
 	$result = db_query($query);
-	$oudedagdeel=1;
+	//$oudedagdeel=1;
 		echo '<tr>';
 			echo '<td valign="middle">';
 				while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
-					if ($oudedagdeel < $row["dagdeel"] ) {
+					/*if ($oudedagdeel < $row["dagdeel"] ) {
 						$oudedagdeel=$row["dagdeel"];
 						print "<hr>\n";
-					}
+					}*/
 					$menu=$row["menu_id"];
 					for ($i=0;$i<$row["indent"];$i++) {
 						print "&nbsp;&nbsp;";
@@ -94,6 +94,8 @@ function display_checklist($datum){
 						case 0:
 						#this is a normal line
 							if (    (! isset($datum) or (strtotime($vandaag)==strtotime($datum)) )  ) {
+								//echo '<a href="#" onclick="popup(\'popUpDiv\')" alt="' .$row["help"]. '">?</a> ';
+								echo '<a href="#" onclick="changeSpanText(\''.$row["help"].'\')">?</a>&nbsp;';
 								print "<a href='checklist.php?act=1&id=".$row["id"]."'>\n";	
 							}
 							if (isset($ref[$row["id"]]) and $ref[$row["id"]]==1) {
@@ -102,9 +104,9 @@ function display_checklist($datum){
 							} else {
 								print "<font color='red' ";
 								# check if item is in former part of day. if so: blink!!
-								if ( ($dagdeel> $row["dagdeel"]) and ($vandaag==$datum) ) {	
+								/*if ( ($dagdeel> $row["dagdeel"]) and ($vandaag==$datum) ) {	
 									print " class='blinking' ";
-								}
+								}*/
 								print ">";
 							}
 							print $row["tekst"];

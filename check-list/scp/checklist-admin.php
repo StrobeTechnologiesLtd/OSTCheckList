@@ -127,6 +127,12 @@ function update_starttext($id,$value) {
 	$result = db_query($query);
 }
 
+function update_helptext($id,$value) {
+	# change the text of the item.
+	$query = "UPDATE " . CHECKLIST_TABLE_CHECKLIST . " SET help='".$value."' WHERE id=".$id."";
+	$result = db_query($query);
+}
+
 function update_disabled($id,$value,$field) {
 	# change the text of the item.
 	$value=strval($value);
@@ -169,6 +175,9 @@ function checklist_admin($cid,$action,$value) {
 		case "starttextsub":	# change period of this entry
 			update_starttext($cid,$value);
 			break;
+		case "helptextsub":	# change period of this entry
+			update_helptext($cid,$value);
+			break;
 		case "disable":	# change period of this entry
 			update_disabled($cid,$value,"disabled");
 			break;
@@ -201,7 +210,7 @@ function checklist_admin($cid,$action,$value) {
 		# ID
 		$id=$row["id"];
 		print "<tr>";
-			print "<td valign=\"middle\" nowrap>".$id."</td>";
+			/*print "<td valign=\"middle\" nowrap>".$id."</td>";*/
 
 			# orde
 			print "<td align=\"middle\" nowrap>";
@@ -277,9 +286,30 @@ function checklist_admin($cid,$action,$value) {
 					# display hyperlink to get to editing
 					print "<a href='checklist-admin.php?action=starttext&id=".$id."'>";
 					if ( strlen($row["start"])<2 ) {
-						print $lang[40];
+						print $lang[44];
 					} else {
 						print $row["start"];
+					}
+					print "</a>";
+				}
+			print "</td>\n";
+			
+			# help
+			print "<td valign=\"left\" nowrap>";
+				if ( ($action=='helptext') and ($id==$cid) ) {
+					print "<form action='checklist-admin.php' name='form' >";
+					print "<input type=hidden name='id' value='".$id."'>";
+					print "<input type=hidden name='action' value='helptextsub'>";
+					print "<font color='red'>".$lang[36]."</font><br>";
+					print "<input type=text name=value onchange=\"form.submit()\" value='".$row["help"]."'>";
+					print "</form>";
+				} else {
+					# display hyperlink to get to editing
+					print "<a href='checklist-admin.php?action=helptext&id=".$id."'>";
+					if ( strlen($row["help"])<2 ) {
+						print $lang[40];
+					} else {
+						print $row["help"];
 					}
 					print "</a>";
 				}
