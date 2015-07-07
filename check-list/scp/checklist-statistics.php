@@ -13,16 +13,16 @@ $nav->addSubMenu(array('desc'=>'Statistics',
 						'href'=>'checklist-statistics.php',
 						'iconclass'=>'closedTickets'
 				));
-$nav->addSubMenu(array('desc'=>'Reports',
+/*$nav->addSubMenu(array('desc'=>'Reports',
 						'title'=>'Check List Reports',
 						'href'=>'checklist-reports.php',
 						'iconclass'=>'closedTickets'
-				));
-$nav->addSubMenu(array('desc'=>'Search',
+				));*/
+/*$nav->addSubMenu(array('desc'=>'Search',
 						'title'=>'Check List Search',
 						'href'=>'checklist-search.php',
 						'iconclass'=>'closedTickets'
-				));
+				));*/
 $nav->addSubMenu(array('desc'=>'Admin',
 						'title'=>'Check List Admin',
 						'href'=>'checklist-admin.php',
@@ -42,14 +42,13 @@ $errormsg="";
 
 global $errormsg;
 
-//include (CHECKLIST_INCLUDE_DIR.'settings.php');
-include (CHECKLIST_INCLUDE_DIR.'lib.php');
-require (CHECKLIST_INCLUDE_DIR.'calendar.php');
+/*include (CHECKLIST_INCLUDE_DIR.'lib.php');
+require (CHECKLIST_INCLUDE_DIR.'calendar.php');*/
 
-$jpgraphpath="jpgraph/src/";
+/*$jpgraphpath="jpgraph/src/";
 include ($jpgraphpath."jpgraph.php");
 include ($jpgraphpath."jpgraph_line.php");
-include ($jpgraphpath."jpgraph_bar.php");
+include ($jpgraphpath."jpgraph_bar.php");*/
 #DEFINE ("TTF_DIR","/usr/X11R6/lib/X11/fonts/TTF/" );
 	
 # initialisation: 
@@ -66,7 +65,6 @@ if ( ! isset($datum) ) {
 if ( ! isset($month) ) { $month=date("m"); }
 if ( ! isset($year) ) { $year=date("Y"); }
 
-# db connection has been made via settings.php.
 // ********************************************
 
 
@@ -74,13 +72,6 @@ if ( ! isset($year) ) { $year=date("Y"); }
 	function display_page($datum,$month,$year) {
 		global $lang;
 		global $errormsg;
-		global $version;
-		//print "<html>";
-		//print "<head>";
-		//print "<title>Groene map</title>";
-		//print "<link rel='stylesheet' type='text/css' href='groenemap.css' />";
-		//print "</head>";
-		//print "<body>";
 
 		print "<table>";
 		print "<tr><td class='border' valign='top'><!-- <h1>Menu</h1> -->";
@@ -95,7 +86,6 @@ if ( ! isset($year) ) { $year=date("Y"); }
 		# first row contains calendar
 		$pn = array('&laquo;'=>'./checklist.php?vorige', '&raquo;'=>'./checklist.php?volgende'); 
 		print "<tr><td valign='top' nowrap>\n";
-		setlocale(LC_TIME, 'nl_NL'); #dutch 
 		$time = time(); 
 		$today = date('j',$time); 
 		$days = array($today=>array(NULL,NULL, 
@@ -118,8 +108,6 @@ if ( ! isset($year) ) { $year=date("Y"); }
 		print "</tr>\n";
 		print "</tr></td></table></td></tr>";
 		print "</table>";
-		//print "</body>";
-		//print "</html>";
 	}
 	
 	function show_average_day_score($month,$year) {
@@ -130,7 +118,7 @@ if ( ! isset($year) ) { $year=date("Y"); }
 		# how many have daily been entered?
 		$query = "SELECT day(datum) as nr, count(distinct(ref))  as ingevuld FROM entries 
 			where month(datum)=".$month." and year(datum)=".$year." group by day(datum) 
-			order by datum" ; 
+			order by datum" ;
 		#echo "<!-- ".$query." -->\n";
 		# initialise array
 		for ($i=1;$i<=31; $i++) {
@@ -144,14 +132,12 @@ if ( ! isset($year) ) { $year=date("Y"); }
 			#print $row["nr"]." - ".$row["ingevuld"]." - ".$l2datay[$row["nr"]]."<br>";
 		}
 	
-		#$datax=$gDateLocale->GetShortMonth();
 
 		// Create the graph.
 		$graph = new Graph(600,200,"auto");
 		$graph->SetScale("textlin");
 		$graph->SetMargin(40,130,20,40);
 		$graph->SetShadow();
-		#$graph->xaxis->SetTickLabels($datax);
 
 		// Create the linear error plot
 		#$l1plot=new LinePlot($l1datay);
@@ -181,7 +167,6 @@ if ( ! isset($year) ) { $year=date("Y"); }
 
 		// Display the graph
 		$graph->Stroke();
-		mysql_free_result($result);
 	}
 
 	function show_personel_activity($month,$year) {
@@ -191,7 +176,7 @@ if ( ! isset($year) ) { $year=date("Y"); }
 		# how many entries  have been entered daily?
 		$query = "SELECT door, count(*)  AS ingevuld FROM entries 
 			where month(datum)=".$month." and year(datum)=".$year." GROUP BY door 
-			ORDER BY door" ; 
+			ORDER BY door" ;
 		#echo "<!-- ".$query." -->\n";
 		#get results
 		$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
@@ -256,7 +241,6 @@ if ( ! isset($year) ) { $year=date("Y"); }
 
 		// Display the graph
 		$graph->Stroke();
-		mysql_free_result($result);
 
 	}
 	
@@ -349,7 +333,6 @@ if ( ! isset($year) ) { $year=date("Y"); }
 
 		// Display the graph
 		$graph->Stroke();
-		mysql_free_result($result);
 	}
 
 
@@ -360,7 +343,7 @@ if ( ! isset($year) ) { $year=date("Y"); }
 	
 require_once(STAFFINC_DIR.'header.inc.php');
 
-	if ( ! isset($graph) ) { 
+	/*if ( ! isset($graph) ) { 
 		display_page($datum,$month,$year); 
 	} else {
 		switch ($graph) {
@@ -374,8 +357,8 @@ require_once(STAFFINC_DIR.'header.inc.php');
 				show_monthly_averages();
 				break;
 		}
-	}
-	//mysql_close($link);
+	}*/
+	display_page($datum,$month,$year); 
 	
 require_once(STAFFINC_DIR.'footer.inc.php');
 ?>

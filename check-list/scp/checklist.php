@@ -8,11 +8,11 @@ require('staff.inc.php');
 // *** osTicket - Menu and Navigation
 // **********************************
 $nav->setTabActive('apps');
-/*$nav->addSubMenu(array('desc'=>'Statistics',
+$nav->addSubMenu(array('desc'=>'Statistics',
 						'title'=>'Check List Statistics',
 						'href'=>'checklist-statistics.php',
 						'iconclass'=>'closedTickets'
-				));*/
+				));
 /*$nav->addSubMenu(array('desc'=>'Reports',
 						'title'=>'Check List Reports',
 						'href'=>'checklist-reports.php',
