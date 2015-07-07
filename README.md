@@ -3,9 +3,9 @@
 ## About
 **Developer:** Strobe Technologies Ltd
 
-**Version:** Beta Release 0.1.4
+**Version:** Release 0.1.5
 
-**Date:** 03/07/2015
+**Date:** 07/07/2015
 
 ## Introduction
 This is a plugin designed for osTicket (http://www.osticket.com/), this plugin adds

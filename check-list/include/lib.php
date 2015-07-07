@@ -51,6 +51,8 @@ function numberOfChecks($period) {
 }
 
 function display_checklist($datum){
+	global $lang;
+	
 	$vandaag=date("Y-m-d",time()); //vandaag is Dutch for today
 	# fill an array to use later
 	$ref=array();
@@ -78,14 +80,9 @@ function display_checklist($datum){
 	# display checklist with link if applicable.
 	$query = 'SELECT * FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled != true ORDER BY orde';
 	$result = db_query($query);
-	//$oudedagdeel=1;
 		echo '<tr>';
 			echo '<td valign="middle">';
 				while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
-					/*if ($oudedagdeel < $row["dagdeel"] ) {
-						$oudedagdeel=$row["dagdeel"];
-						print "<hr>\n";
-					}*/
 					$menu=$row["menu_id"];
 					for ($i=0;$i<$row["indent"];$i++) {
 						print "&nbsp;&nbsp;";
@@ -94,20 +91,16 @@ function display_checklist($datum){
 						case 0:
 						#this is a normal line
 							if (    (! isset($datum) or (strtotime($vandaag)==strtotime($datum)) )  ) {
-								//echo '<a href="#" onclick="popup(\'popUpDiv\')" alt="' .$row["help"]. '">?</a> ';
-								echo '<a href="#" onclick="changeSpanText(\''.$row["help"].'\')">?</a>&nbsp;';
+								echo '<a href="#" onclick="changeSpanText(\''.$row["help"].'\')"><img src="check-list-img/help.png"></a>&nbsp;';
+								$period = $lang[34][$row["period"]];
+								echo $period.'&nbsp;';
 								print "<a href='checklist.php?act=1&id=".$row["id"]."'>\n";	
 							}
 							if (isset($ref[$row["id"]]) and $ref[$row["id"]]==1) {
 								# key known so info in database
 								print "<font color='green'>";
 							} else {
-								print "<font color='red' ";
-								# check if item is in former part of day. if so: blink!!
-								/*if ( ($dagdeel> $row["dagdeel"]) and ($vandaag==$datum) ) {	
-									print " class='blinking' ";
-								}*/
-								print ">";
+								print "<font color='red'>";
 							}
 							print $row["tekst"];
 							print "</font>";
@@ -154,7 +147,7 @@ function display_datelog($datum) {
 		print "</b></font><hr>\n";
 	}
 	if ( strlen($datum)<2 ) { $datum=date("Y-m-d",time()); }	
-	$heading=array(0=>"Daily",1=>"Weekly",2=>"Monthly");
+	$heading=array(0=>"Daily",1=>"Weekly",2=>"Monthly"); //??????
 	for ($period=0;$period<=2;$period++) {
 		switch ($period) {
 			case 0:
@@ -176,7 +169,7 @@ function display_datelog($datum) {
 		echo "<!-- ".$query." -->\n";
 		# start display of section
 		if ( numberOfChecks($period)>0 ) {
-			print "<h2>".$heading[$period]."</h2>";
+			print "<h2>".$heading[$period]."</h2>"; //????
 			$result = db_query($query);
 			print "<ul>";
 			while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
@@ -230,7 +223,6 @@ function store_form($current_user,$act,$id,$logmessage,$status) {
 
 function daily_percent($date) {
 	// Get Daily total of checks to perform
-	//$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled !=true AND header=0 AND period=0';
 	$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled !=true AND header=0 AND period=0 AND date(start) <= date("'.$date.'")';
 	$result = db_query($query);
 	$row = db_fetch_array($result, MYSQL_ASSOC);
@@ -248,7 +240,6 @@ function daily_percent($date) {
 
 function weekly_percent($date) {
 	// Get Weekly total of checks to perform
-	//$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled !=true AND header=0 AND period=1';
 	$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled !=true AND header=0 AND period=1 AND date(start) <= date("'.$date.'")';
 	$result = db_query($query);
 	$row = db_fetch_array($result, MYSQL_ASSOC);
@@ -266,7 +257,6 @@ function weekly_percent($date) {
 
 function monthly_percent($date) {
 	// Get Monthly total of checks to perform
-	//$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled !=true AND header=0 AND period=2';
 	$query = 'SELECT count(*) AS total FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled !=true AND header=0 AND period=2 AND date(start) <= date("'.$date.'")';
 	$result = db_query($query);
 	$row = db_fetch_array($result, MYSQL_ASSOC);

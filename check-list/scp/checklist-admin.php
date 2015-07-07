@@ -210,7 +210,6 @@ function checklist_admin($cid,$action,$value) {
 		# ID
 		$id=$row["id"];
 		print "<tr>";
-			/*print "<td valign=\"middle\" nowrap>".$id."</td>";*/
 
 			# orde
 			print "<td align=\"middle\" nowrap>";

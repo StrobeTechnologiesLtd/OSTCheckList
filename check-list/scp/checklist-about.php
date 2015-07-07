@@ -50,8 +50,8 @@ echo '
 	meaning staff can be given checks like backups and more than do not require tickets but needs doing and recording.</p>
 	<p>
 		<b>Application:</b> Check List Plugin<br />
-		<b>Version:</b> v0.1.4<br />
-		<b>Date:</b> 03/07/2015<br />
+		<b>Version:</b> v0.1.5<br />
+		<b>Date:</b> 07/07/2015<br />
 		<b>Copyright:</b> Strobe Technologies Ltd<br />
 		<b>Website:</b> http://www.strobe-it.co.uk/
 	</p>
