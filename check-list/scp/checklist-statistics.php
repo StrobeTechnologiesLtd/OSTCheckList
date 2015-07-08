@@ -42,29 +42,35 @@ $errormsg="";
 
 global $errormsg;
 
-/*include (CHECKLIST_INCLUDE_DIR.'lib.php');
-require (CHECKLIST_INCLUDE_DIR.'calendar.php');*/
-
-/*$jpgraphpath="jpgraph/src/";
-include ($jpgraphpath."jpgraph.php");
-include ($jpgraphpath."jpgraph_line.php");
-include ($jpgraphpath."jpgraph_bar.php");*/
-#DEFINE ("TTF_DIR","/usr/X11R6/lib/X11/fonts/TTF/" );
+## JpGraph Includes
+include (CHECKLIST_JPGRAPH.'jpgraph.php');
+include (CHECKLIST_JPGRAPH.'jpgraph_line.php');
+include (CHECKLIST_JPGRAPH.'jpgraph_bar.php');
 	
 # initialisation: 
 #error_reporting(E_ALL);
 /*import_request_variables("gpc");*/
 extract($_REQUEST);
 $num_columns=6;
-$current_user=getenv('REMOTE_USER');
-if ( ! isset($datum) ) { 
+
+
+## Check to see if full date passed via GET or not, if not get todays date
+if ( strlen($_GET['datum'])<2 ) { 
 	$datum=date("Y-m-d",time()); 
 } else {
-	list($year,$month, $day) = split('[/.-]', $datum);
-}	
-if ( ! isset($month) ) { $month=date("m"); }
-if ( ! isset($year) ) { $year=date("Y"); }
+	$datum = $_GET['datum'];
+	list($year,$month, $day) = split('[/.-]', $_GET['datum']);
+}
 
+## Work out if month or year was passed via GET and fill in month id no date or GET sent
+if (isset($_GET['month']))  { $month=$_GET['month']; }
+if (isset($_GET['year']))  { $year=$_GET['year']; }
+if ( ! isset($month) ) { $month=date("m"); }
+if ( ! isset($year) )  { $year=date("Y"); }
+
+$time = time(); 
+$today = date('j',$time);
+$current_user = $thisstaff->getFirstName() . ' ' . $thisstaff->getLastName();
 // ********************************************
 
 
@@ -74,20 +80,17 @@ if ( ! isset($year) ) { $year=date("Y"); }
 		global $errormsg;
 
 		print "<table>";
-		print "<tr><td class='border' valign='top'><!-- <h1>Menu</h1> -->";
-		#print "<!-- user ".$current_user."<br> -->";
-		#print "<!-- <a href='index.php?f=1'>New</a><br> -->";
+		print "<tr><td class='border' valign='top'>";
 
 		print "</td>";
-		//global_menu();
 
-		print "<hr><td valign='top'><table><tr><td><!-- <H1>Main</h1><p> -->";
+		print "<hr><td valign='top'><table><tr><td>";
 		if ( strlen($datum)<2 ) { $datum=date("Y-m-d",time()); }
 		# first row contains calendar
-		$pn = array('&laquo;'=>'./checklist.php?vorige', '&raquo;'=>'./checklist.php?volgende'); 
+		$pn = array('&laquo;'=>'./checklist-statistics.php?vorige', '&raquo;'=>'./checklist-statistics.php?volgende'); 
 		print "<tr><td valign='top' nowrap>\n";
-		$time = time(); 
-		$today = date('j',$time); 
+		//$time = time(); 
+		//$today = date('j',$time); 
 		$days = array($today=>array(NULL,NULL, 
 			'<span style="color: red; font-weight: bold; font-size: larger; 
 			text-decoration: blink;">' .$today.'</span>')); 
@@ -116,17 +119,17 @@ if ( ! isset($year) ) { $year=date("Y"); }
 		# get number of checkpoints 
 		$totaal=numberOfCheckpoints();
 		# how many have daily been entered?
-		$query = "SELECT day(datum) as nr, count(distinct(ref))  as ingevuld FROM entries 
-			where month(datum)=".$month." and year(datum)=".$year." group by day(datum) 
-			order by datum" ;
+		$query = "SELECT day(datum) AS nr, count(distinct(ref))  AS ingevuld FROM ". CHECKLIST_TABLE_ENTRIES ." 
+			WHERE month(datum)=".$month." AND year(datum)=".$year." GROUP BY day(datum) 
+			ORDER BY datum" ;
 		#echo "<!-- ".$query." -->\n";
 		# initialise array
 		for ($i=1;$i<=31; $i++) {
 			$l2datay[$i]=0;
 		}
 		# get results
-		$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
-		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+		$result = db_query($query);
+		while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
 			#print $row["dag"]." = array('./index.php?datum='".$row["dag"].",'linked-day'";
 			$l2datay[$row["nr"]-1]=round(($row["ingevuld"]/$totaal)*100) ;
 			#print $row["nr"]." - ".$row["ingevuld"]." - ".$l2datay[$row["nr"]]."<br>";
@@ -168,21 +171,22 @@ if ( ! isset($year) ) { $year=date("Y"); }
 		// Display the graph
 		$graph->Stroke();
 	}
+	
 
 	function show_personel_activity($month,$year) {
 		global $lang;
 		# function for calculating who has made how many entries
 	
 		# how many entries  have been entered daily?
-		$query = "SELECT door, count(*)  AS ingevuld FROM entries 
-			where month(datum)=".$month." and year(datum)=".$year." GROUP BY door 
+		$query = "SELECT door, count(*)  AS ingevuld FROM ". CHECKLIST_TABLE_ENTRIES ." 
+			WHERE month(datum)=".$month." AND year(datum)=".$year." GROUP BY door 
 			ORDER BY door" ;
 		#echo "<!-- ".$query." -->\n";
 		#get results
-		$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+		$result = db_query($query);
 		$i=0;
 		$totaal=0;
-		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+		while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
 			#print $row["dag"]." = array('./index.php?datum='".$row["dag"].",'linked-day'";
 			$databarx[$i]=$row["door"];
 			$databary[$i]=$row["ingevuld"];
@@ -244,6 +248,7 @@ if ( ! isset($year) ) { $year=date("Y"); }
 
 	}
 	
+	
 	function show_monthly_averages() {
 		global $lang;
 		# function for calculating and displaying of monthly average percentile score
@@ -251,10 +256,10 @@ if ( ! isset($year) ) { $year=date("Y"); }
 		# get number of checkpoints op
 		$totaal=numberOfCheckpoints();
 		# how may have been entered daily?
-		$query = "SELECT day(datum) as dag, month(datum) as maand, count(distinct(ref))  as ingevuld 
-			FROM entries,checklist where DATE_SUB(CURDATE(),INTERVAL 12 month)<=datum and ref=checklist.id and disabled=0 
-			group by day(datum),month(datum) 
-			order by year(datum),month(datum),day(datum)";
+		$query = "SELECT day(datum) AS dag, month(datum) AS maand, count(distinct(ref)) AS ingevuld 
+			FROM ". CHECKLIST_TABLE_ENTRIES .",". CHECKLIST_TABLE_CHECKLIST ." WHERE DATE_SUB(CURDATE(),INTERVAL 12 month)<=datum AND ref=". CHECKLIST_TABLE_CHECKLIST .".id and disabled=0 
+			GROUP BY day(datum),month(datum) 
+			ORDER BY year(datum),month(datum),day(datum)";
 
 		#echo "<!-- ".$query." -->\n";
 		# initialise array
@@ -262,11 +267,11 @@ if ( ! isset($year) ) { $year=date("Y"); }
 		#	$l2datay[$i]=0;
 		#}
 		# get results
-		$result = mysql_query($query) or exit ($lang[21].mysql_error()); 
+		$result = db_query($query);
 		$teller=0;
 		$maand=0;
 		$aantaldagen=0;
-		while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+		while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
 			if ( $maand <> $row["maand"]  and $maand <> 0) {
 				# convert to average
 				$databary[$teller]=$databary[$teller]/$aantaldagen;
@@ -334,17 +339,19 @@ if ( ! isset($year) ) { $year=date("Y"); }
 		// Display the graph
 		$graph->Stroke();
 	}
+	
 
 
 	##############################################################################
 	#                            End of functions                                #
 	##############################################################################
 	# decide what to display, a graph (which one?) or the page itself	
-	
-require_once(STAFFINC_DIR.'header.inc.php');
 
-	/*if ( ! isset($graph) ) { 
+	//display_page($datum,$month,$year); 
+	if ( ! isset($graph) ) {
+		require_once(STAFFINC_DIR.'header.inc.php');
 		display_page($datum,$month,$year); 
+		require_once(STAFFINC_DIR.'footer.inc.php');
 	} else {
 		switch ($graph) {
 			case 1:
@@ -357,8 +364,5 @@ require_once(STAFFINC_DIR.'header.inc.php');
 				show_monthly_averages();
 				break;
 		}
-	}*/
-	display_page($datum,$month,$year); 
-	
-require_once(STAFFINC_DIR.'footer.inc.php');
+	}
 ?>
