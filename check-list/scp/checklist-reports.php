@@ -76,13 +76,6 @@ $current_user = $thisstaff->getFirstName() . ' ' . $thisstaff->getLastName();
 function display_page($datum,$month,$year,$report) {
 	global $lang;
 	global $errormsg;
-	global $version;
-	//print "<html>";
-	//print "<head>";
-	//print "<title>CheckList</title>";
-	//print "<link rel='stylesheet' type='text/css' href='groenemap.css' />";
-	//print "</head>";
-	//print "<body>";
 
 	print "<table>";
 	print "<tr><td class='border' valign='top'><!-- <h1>".$lang[22]."</h1> -->";
@@ -129,8 +122,6 @@ function display_page($datum,$month,$year,$report) {
 	print "</tr>\n";
 	print "</tr></td></table></td></tr>";
 	print "</table>";
-	//print "</body>";
-	//print "</html>";
 }
 	
 function display_report($report,$month,$year) {
@@ -138,15 +129,15 @@ function display_report($report,$month,$year) {
 	global $statstr;
 	switch ($report) {
 		case 1:
-			$query  = "SELECT checklist.tekst as checktekst,entries.datum as datum, entries.tekst as tekst, entries.door as door, entries.ref as ref, entries.status as status ";
-			$query .= " from entries,checklist where checklist.id=entries.ref and  status!=0 and status!=1 ";
-			$query .= " and month(datum)=".$month." and year(datum)=".$year." order by ref,datum desc";
+			$query  = "SELECT ". CHECKLIST_TABLE_CHECKLIST .".tekst AS checktekst,". CHECKLIST_TABLE_ENTRIES .".datum AS datum, ". CHECKLIST_TABLE_ENTRIES .".tekst AS tekst, ". CHECKLIST_TABLE_ENTRIES .".door AS door, ". CHECKLIST_TABLE_ENTRIES .".ref AS ref, ". CHECKLIST_TABLE_ENTRIES .".status AS status ";
+			$query .= " FROM ". CHECKLIST_TABLE_ENTRIES .",". CHECKLIST_TABLE_CHECKLIST ." WHERE ". CHECKLIST_TABLE_CHECKLIST .".id=". CHECKLIST_TABLE_ENTRIES .".ref AND status!=0 AND status!=1 ";
+			$query .= " AND month(datum)=".$month." AND year(datum)=".$year." ORDER BY ref,datum desc";
 	                #print "$query";
-     	        	$result = mysql_query($query) or exit ($lang[21].mysql_error());
+					$result = db_query($query);
 	                print "<table >"; 
 			print "<tr><th>".$lang[28]."</th><th>".$lang[29]."</th><th>".$lang[30]."</th></tr>\n";
 			$oldref=-1;
-	                while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+					while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
 				if ( $oldref!=$row["ref"]) {	
 					$oldref=$row["ref"];
 					print "<tr><th></th><th align='left'>".$row["checktekst"]."</th><th><th></tr>\n";
@@ -176,18 +167,17 @@ function display_report($report,$month,$year) {
 	                }
 	                print "</table>";
 	                print "\n\n\n";
-	                mysql_free_result($result);
 			break;
 		case 2:
-			$query  = "SELECT * from checklist order by orde desc";
-	                #print "$query";
-     	        	$result = mysql_query($query) or exit ($lang[21].mysql_error());
-	                print "<table border='0'>"; 
+			$query  = "SELECT * FROM ". CHECKLIST_TABLE_CHECKLIST ." ORDER BY orde desc";
+			#print "$query";
+			$result = db_query($query);
+			print "<table border='0'>"; 
 			$oldref=-1;
-	                while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-			# ask per checklistitem the number of entered entries this month per status
-				$query2="SELECT count(status) as count,status from entries where ref=".$row["id"]." and month(datum)=".$month." and year(datum)=".$year." group by status ";
-     	        		$result2 = mysql_query($query2) or exit ($lang[21].mysql_error());
+			while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
+				# ask per checklistitem the number of entered entries this month per status
+				$query2="SELECT count(status) AS count,status FROM ". CHECKLIST_TABLE_ENTRIES ." WHERE ref=".$row["id"]." AND month(datum)=".$month." AND year(datum)=".$year." GROUP BY status ";
+				$result2 = db_query($query2);
 				$num_rows = mysql_num_rows($result2);
 				# we only display if there are entries for this checklist-item. disabled or not.
 				if ( $num_rows > 0 ) { 
@@ -208,11 +198,9 @@ function display_report($report,$month,$year) {
 					}
 		                	print "</table></td></tr>";
 				}
-	                	mysql_free_result($result2);
 	                }
 	                print "</table>";
 	                print "\n\n\n";
-	                mysql_free_result($result);
 			break;
 		case 3:
 			# trendanalysis graph
@@ -242,7 +230,7 @@ function display_graph($graph,$sub,$datum,$month,$year,$report) {
 	switch($graph) {
 		case 1:
 			# graph for trendanalysis
-			$query  = "SELECT id,tekst from checklist order by orde desc";
+			$query  = "SELECT id,tekst from ". CHECKLIST_TABLE_CHECKLIST ." order by orde desc";
 	                #print "$query";
 	
      	        	$result = mysql_query($query) or exit ($lang[21].mysql_error());
@@ -269,7 +257,6 @@ function display_graph($graph,$sub,$datum,$month,$year,$report) {
 					}
 					$data[$i]=$datay;
 					$legend[$i]=$row["tekst"];
-	                		mysql_free_result($result2);
 				}
 				$max=$i;
 				$lineplot=array();
@@ -299,7 +286,6 @@ function display_graph($graph,$sub,$datum,$month,$year,$report) {
 				$graph->Stroke();
 				print "<hr>";
 
-				mysql_free_result($result);
 				break;
 		}
 	}
@@ -316,7 +302,6 @@ if ( ! isset($graph) ) {
 } else {
 	display_graph($graph,$sub,$datum,$month,$year,$report);
 }
-//mysql_close($link);
 
 require_once(STAFFINC_DIR.'footer.inc.php');
 ?>
