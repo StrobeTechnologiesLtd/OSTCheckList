@@ -36,6 +36,11 @@ $nav->addSubMenu(array('desc'=>'About',
 // **********************************
 
 
+// *** Check List Plugin - Display
+// *******************************
+$ost->addExtraHeader('<link rel="stylesheet" type="text/css" href="checklist.css" />');
+
+
 // *** Check List Plugin - Includes / Variables
 // ********************************************
 $errormsg="";
@@ -126,7 +131,6 @@ function display_page($datum,$month,$year,$report) {
 	
 function display_report($report,$month,$year) {
 	global $lang;
-	global $statstr;
 	switch ($report) {
 		case 1:
 			$query  = "SELECT ". CHECKLIST_TABLE_CHECKLIST .".tekst AS checktekst,". CHECKLIST_TABLE_ENTRIES .".datum AS datum, ". CHECKLIST_TABLE_ENTRIES .".tekst AS tekst, ". CHECKLIST_TABLE_ENTRIES .".door AS door, ". CHECKLIST_TABLE_ENTRIES .".ref AS ref, ". CHECKLIST_TABLE_ENTRIES .".status AS status ";
@@ -178,22 +182,20 @@ function display_report($report,$month,$year) {
 				# ask per checklistitem the number of entered entries this month per status
 				$query2="SELECT count(status) AS count,status FROM ". CHECKLIST_TABLE_ENTRIES ." WHERE ref=".$row["id"]." AND month(datum)=".$month." AND year(datum)=".$year." GROUP BY status ";
 				$result2 = db_query($query2);
-				$num_rows = mysql_num_rows($result2);
-				# we only display if there are entries for this checklist-item. disabled or not.
-				if ( $num_rows > 0 ) { 
+				if ( $row["header"] < 1 ) {
 					print "<tr><th align='left'>".$row["tekst"];
 					if ( $row["disabled"]==1 ) {
 						print "<font size='1' color='red'>".$lang[31]."</font>";
 					}
 					print "</th></tr>\n";
-					print "<tr><td align='right'><table border='1'><tr><th>".$lang[32]."Status</th><th>".$lang[12]."</th></tr>\n";
-		                	while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)) {
+					print "<tr><td align='right'><table border='1'><tr><th>".$lang[32]."</th><th>".$lang[12]."</th></tr>\n";
+					while ($row2 = db_fetch_array($result2, MYSQL_ASSOC)) {
 						print "<tr><td>"; #.$row2["status"]."</td><td>".$row2["count"]."</td></tr>\n";
 		                        	if ( $row2["status"] == -1 ) { print "<span class='not_ok'>";}
 			                        if ( $row2["status"] ==  1 ) { print "<span class='ok'>";}
 			                        if ( $row2["status"] ==  2 ) { print "<span class='warning'>";}
 	
-						print $statstr[$row2["status"]]."</span></td><td>".$row2["count"]."</td></tr>\n";
+						print $lang[45][$row2["status"]]."</span></td><td>".$row2["count"]."</td></tr>\n";
 	
 					}
 		                	print "</table></td></tr>";

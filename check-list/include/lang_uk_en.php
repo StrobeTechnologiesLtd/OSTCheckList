@@ -1,12 +1,11 @@
 <?php
 # English language file
-# Version: 1.1
+# Version: 1.2
 
 global $month,$lang,$locale;
 
 setlocale(LC_TIME, 'uk_en');
 $monthstr=array("Jan","Feb","Mar","Apr","Mai","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
-$statstr=array(-1 => "Error",0 => "Neutral",1 => "Good",2 => "Attention");
 
 $lang[1]="Not enough text has been entered!";
 $lang[2]="User: ";
@@ -52,5 +51,6 @@ $lang[41]="What has happened today";
 $lang[42]="Goto today!";
 $lang[43]="Items can no longer be added to this day!";
 $lang[44]="<- YYYY-MM-DD to be entered ->";
+$lang[45]=array(-1=>"Error",0=>"Neutral",1=>"Good",2=>"Attention");
 
 ?>
