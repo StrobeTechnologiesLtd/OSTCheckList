@@ -135,7 +135,7 @@ function display_report($report,$month,$year) {
 		case 1:
 			$query  = "SELECT ". CHECKLIST_TABLE_CHECKLIST .".tekst AS checktekst,". CHECKLIST_TABLE_ENTRIES .".datum AS datum, ". CHECKLIST_TABLE_ENTRIES .".tekst AS tekst, ". CHECKLIST_TABLE_ENTRIES .".door AS door, ". CHECKLIST_TABLE_ENTRIES .".ref AS ref, ". CHECKLIST_TABLE_ENTRIES .".status AS status ";
 			$query .= " FROM ". CHECKLIST_TABLE_ENTRIES .",". CHECKLIST_TABLE_CHECKLIST ." WHERE ". CHECKLIST_TABLE_CHECKLIST .".id=". CHECKLIST_TABLE_ENTRIES .".ref AND status!=0 AND status!=1 ";
-			$query .= " AND month(datum)=".$month." AND year(datum)=".$year." ORDER BY ref,datum desc";
+			$query .= " AND month(datum)=".$month." AND year(datum)=".$year." ORDER BY ref,datum DESC";
 	                #print "$query";
 					$result = db_query($query);
 	                print "<table >"; 
@@ -173,7 +173,7 @@ function display_report($report,$month,$year) {
 	                print "\n\n\n";
 			break;
 		case 2:
-			$query  = "SELECT * FROM ". CHECKLIST_TABLE_CHECKLIST ." ORDER BY orde desc";
+			$query  = "SELECT * FROM ". CHECKLIST_TABLE_CHECKLIST ." ORDER BY orde DESC";
 			#print "$query";
 			$result = db_query($query);
 			print "<table border='0'>"; 
@@ -226,17 +226,19 @@ function display_report($report,$month,$year) {
 		}
 }
 
+
 function display_graph($graph,$sub,$datum,$month,$year,$report) {
 	global $lang;
 	global $monthstr;
 	switch($graph) {
 		case 1:
 			# graph for trendanalysis
-			$query  = "SELECT id,tekst from ". CHECKLIST_TABLE_CHECKLIST ." order by orde desc";
+			$query  = "SELECT id,tekst FROM ". CHECKLIST_TABLE_CHECKLIST ." WHERE header < 1 ORDER BY orde DESC";
 	                #print "$query";
 	
 					$result = db_query($query);
-			#$aantalkleuren=mysql_num_rows($result); ????
+			#$aantalkleuren=mysql_num_rows($result); ???? TEMP BELOW
+			$aantalkleuren = 2000;
 			#initialisation: filling of color table
 			$color=array();
 			$stapje=hexdec('FFFFFF')/$aantalkleuren;
@@ -248,12 +250,11 @@ function display_graph($graph,$sub,$datum,$month,$year,$report) {
 			$i=0;
 				while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
 					$i++;
-					$query2="SELECT count(status) as count,month(datum) as maand from entries where ref=".$row["id"]." and status=".$sub." and year(datum)=".$year." group by month(datum) ";
-	     	        		$result2 = mysql_query($query2) or exit ($lang[21].mysql_error());
+					$query2="SELECT count(status) AS count,month(datum) AS maand FROM ". CHECKLIST_TABLE_ENTRIES ." WHERE ref=".$row["id"]." AND status=".$sub." AND year(datum)=".$year." GROUP BY month(datum) ";
+					$result2 = db_query($query2);
 					$datay=array_fill(0, 12, 0); 
-					$num_rows = mysql_num_rows($result2);
-					if ($num_rows>0) {
-		                		while ($row2 = mysql_fetch_array($result2, MYSQL_ASSOC)) {
+					if ($result2) {
+						while ($row2 = db_fetch_array($result2, MYSQL_ASSOC)) {
 							$datay[$row2["maand"]]=$row2["count"];
 						}
 					}
@@ -261,12 +262,14 @@ function display_graph($graph,$sub,$datum,$month,$year,$report) {
 					$legend[$i]=$row["tekst"];
 				}
 				$max=$i;
+				
 				$lineplot=array();
-				$graph = new Graph(1100,500,"auto");
+				$graph = new Graph(600,500,"auto");
 				$graph->SetScale("textlin");
-				$graph->img->SetMargin(40,380,40,40);    
+				#$graph->img->SetMargin(40,380,40,40);
 				$graph->SetScale("textlin");
-				$graph->legend->Pos(0.02,0.5,"right","center");
+				#$graph->legend->Pos(0.02,0.5,"right","center");
+				#$graph->legend->SetAbsPos(0,700,"left","bottom");
 				$graph->xaxis->SetTickLabels($monthstr);
 				for ($i=1;$i<=$max;$i++) {
 					if ( count($data[$i])>0 ) {
@@ -277,12 +280,14 @@ function display_graph($graph,$sub,$datum,$month,$year,$report) {
 						#$lineplot[$i]->SetWeight(1);
 					}
 				}
-				$graph->title->Set("titel");
+				#$graph->title->Set("title");
 				$graph->xaxis->title->Set($lang[14]);
 				$graph->yaxis->title->Set($lang[12]);
 
 				$graph->yaxis->SetColor("red");
 				$graph->yaxis->SetWeight(2);
+				$graph->xaxis->SetColor("red");
+				$graph->xaxis->SetWeight(2);
 				$graph->SetShadow();
 
 				$graph->Stroke();
@@ -297,13 +302,11 @@ function display_graph($graph,$sub,$datum,$month,$year,$report) {
 	##############################################################################
 	# decide what to display, a graph (which one?) or the page itself	
 
-require_once(STAFFINC_DIR.'header.inc.php');
-	
 if ( ! isset($graph) ) {
+	require_once(STAFFINC_DIR.'header.inc.php');
 	display_page($datum,$month,$year,$report); 
+	require_once(STAFFINC_DIR.'footer.inc.php');
 } else {
 	display_graph($graph,$sub,$datum,$month,$year,$report);
 }
-
-require_once(STAFFINC_DIR.'footer.inc.php');
 ?>
