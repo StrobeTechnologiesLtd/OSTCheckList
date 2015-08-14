@@ -35,69 +35,62 @@ $nav->addSubMenu(array('desc'=>'About',
 				));
 // **********************************
 
-
 // *** Check List Plugin - Includes / Variables
 // ********************************************
-global $errormsg;
 $errormsg="";
 
-//include (CHECKLIST_INCLUDE_DIR.'settings.php');
-include (CHECKLIST_INCLUDE_DIR.'lib.php');
-require (CHECKLIST_INCLUDE_DIR.'calendar.php');
+global $errormsg;
 
-$jpgraphpath="jpgraph/src/";
-include ($jpgraphpath."jpgraph.php");
-include ($jpgraphpath."jpgraph_line.php");
-include ($jpgraphpath."jpgraph_bar.php");
-#DEFINE ("TTF_DIR","/usr/X11R6/lib/X11/fonts/TTF/" );
+## JpGraph Includes
+include (CHECKLIST_JPGRAPH.'jpgraph.php');
+include (CHECKLIST_JPGRAPH.'jpgraph_line.php');
+include (CHECKLIST_JPGRAPH.'jpgraph_bar.php');
 	
-# initialisatie: 
-#error_reporting(E_ALL);
-/*import_request_variables("gpc");*/
+# initialisation: 
 extract($_REQUEST);
 $num_columns=6;
-//$current_user=getenv('REMOTE_USER');
-$current_user = $thisstaff->getFirstName() . ' ' . $thisstaff->getLastName();
-if ( ! isset($datum) ) { 
+
+
+## Check to see if full date passed via GET or not, if not get todays date
+if ( strlen($_GET['datum'])<2 ) { 
 	$datum=date("Y-m-d",time()); 
 } else {
-	list($year,$month, $day) = split('[/.-]', $datum);
-}	
+	$datum = $_GET['datum'];
+	list($year,$month, $day) = split('[/.-]', $_GET['datum']);
+}
+
+## Work out if month or year was passed via GET and fill in month id no date or GET sent
+if (isset($_GET['month']))  { $month=$_GET['month']; }
+if (isset($_GET['year']))  { $year=$_GET['year']; }
 if ( ! isset($month) ) { $month=date("m"); }
-if ( ! isset($year) ) { $year=date("Y"); }
+if ( ! isset($year) )  { $year=date("Y"); }
+
 if ( ! isset($searchstr) ) { $searchstr=""; }
+
+$time = time(); 
+$today = date('j',$time);
+$current_user = $thisstaff->getFirstName() . ' ' . $thisstaff->getLastName();
+// ********************************************
+
+
+
 
 function display_page($datum,$month,$year,$searchstr) {
 	global $lang;
 	global $errormsg;
-	global $version;
-	//print "<html>";
-	//print "<head>";
-	//print "<title>Groene map</title>";
-	//print "<link rel='stylesheet' type='text/css' href='groenemap.css' />";
-	//print "</head>";
-	#print "<body onload='document.forms[0].zoekveld.focus();'>  ";
-	print "<body onload='document.forms[0].elements[0].focus();'>  ";
 
 	print "<table>";
-	print "<tr><td class='border' valign='top'><!-- <h1>Menu</h1> -->";
-	#print "<!-- User ".$current_user."<br> -->";
-
-	print "</td>";
-
-	//global_menu();
+	print "<tr>";
+	
 	print "<hr><td valign='top'><table><tr><td><!-- <H1>Main</h1><p> -->";
 	if ( strlen($datum)<2 ) { $datum=date("Y-m-d",time()); }
 	# first row contains calendar
-	$pn = array('&laquo;'=>'./checklist.php?vorige', '&raquo;'=>'./checklist.php?volgende'); 
+	$pn = array('&laquo;'=>'./checklist-search.php?vorige', '&raquo;'=>'./checklist-search.php?volgende'); 
 	print "<tr><td valign='top' nowrap>\n";
-	setlocale(LC_TIME, 'nl_NL'); #dutch 
-	$time = time(); 
-	$today = date('j',$time); 
 	$days = array($today=>array(NULL,NULL, 
 		'<span style="color: red; font-weight: bold; font-size: larger; 
 		text-decoration: blink;">' .$today.'</span>')); 
-		show_calendar("checklist-statistics.php",$year,$month);
+		show_calendar("checklist-search.php",$year,$month);
 	print "</td><td valign='top' align='center'>";
 	print "<img src='check-list-img/Vista-kdisknav.png'>";
 	print "</td></tr></table>";
@@ -105,7 +98,7 @@ function display_page($datum,$month,$year,$searchstr) {
 	print "\n\n<!-- end off kalendar -->\n\n";
 	# display available reports
 	print "<!-- start search entry -->\n";
-	print "<form method='post' id='myform' action='checklist-search.php'>\n";
+	print "<form method='get' id='myform' action='checklist-search.php'>\n";
 	print "<input type='text' name='searchstr' id='zoekveld' value=''><br>\n";
 	print "</form>\n";
 	print "<td valign='top'>";
@@ -118,8 +111,6 @@ function display_page($datum,$month,$year,$searchstr) {
 	# doe de search query
 	print "</tr></td></table></td></tr>";
 	print "</table>";
-	//print "</body>";
-	//print "</html>";
 }
 	
 
@@ -127,13 +118,12 @@ function search_function($searchstr) {
 	global $lang;
 	# split search words to an array
 	$words = split("[\n\r\t ]+", $searchstr);
-	print "De zoektocht naar <span class='blue'>'".$searchstr."'</span> heeft het volgende opgeleverd:<br><br>\n";
-	#$query = "SELECT *  from entries where tekst like '%".$searchstr."%' order by datum desc";
-	$query = "SELECT *  from entries where MATCH (tekst) AGAINST ('".$searchstr."') order by datum desc";
+	print "The quest for <span class='blue'>'".$searchstr."'</span> has produced the following:<br><br>\n";
+	$query = "SELECT * FROM ". CHECKLIST_TABLE_ENTRIES ." WHERE MATCH (tekst) AGAINST ('".$searchstr."') ORDER BY datum DESC";
     #print "$query";
-    $result = mysql_query($query) or exit ($lang[21].mysql_error());
+	$result = db_query($query);
 	print "<table>";
-    while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+	while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
 		print "<tr><td nowrap valign='top'>";
 		print $row["datum"];
 		print "</td><td>";
@@ -151,7 +141,6 @@ function search_function($searchstr) {
     }
 	print "</table>";
     print "\n\n\n";
-    mysql_free_result($result);
 
 }
 
@@ -164,7 +153,6 @@ function search_function($searchstr) {
 require_once(STAFFINC_DIR.'header.inc.php');
 
 display_page($datum,$month,$year,$searchstr); 
-//mysql_close($link);
 
 require_once(STAFFINC_DIR.'footer.inc.php');
 ?>

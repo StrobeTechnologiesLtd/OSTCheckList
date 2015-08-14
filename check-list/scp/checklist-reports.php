@@ -18,11 +18,11 @@ $nav->addSubMenu(array('desc'=>'Reports',
 						'href'=>'checklist-reports.php',
 						'iconclass'=>'closedTickets'
 				));
-/*$nav->addSubMenu(array('desc'=>'Search',
+$nav->addSubMenu(array('desc'=>'Search',
 						'title'=>'Check List Search',
 						'href'=>'checklist-search.php',
 						'iconclass'=>'closedTickets'
-				));*/
+				));
 $nav->addSubMenu(array('desc'=>'Admin',
 						'title'=>'Check List Admin',
 						'href'=>'checklist-admin.php',

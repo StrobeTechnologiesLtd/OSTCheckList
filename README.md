@@ -3,7 +3,7 @@
 ## About
 **Developer:** Strobe Technologies Ltd
 
-**Version:** Release 0.1.7
+**Version:** Release 0.1.9
 
 **Date:** 14/08/2015
 
@@ -15,6 +15,7 @@ the following features to osTicket: -
 * Look through calendar at historical results
 * Produce Stats on who has done what
 * Report on issues and trends
+* Ability to search comments
 
 ## Installation Instructions
 1. Copy contents to your OSTICKET_ROOT/include/plugins directory
