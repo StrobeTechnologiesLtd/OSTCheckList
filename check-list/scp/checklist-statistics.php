@@ -13,11 +13,11 @@ $nav->addSubMenu(array('desc'=>'Statistics',
 						'href'=>'checklist-statistics.php',
 						'iconclass'=>'closedTickets'
 				));
-/*$nav->addSubMenu(array('desc'=>'Reports',
+$nav->addSubMenu(array('desc'=>'Reports',
 						'title'=>'Check List Reports',
 						'href'=>'checklist-reports.php',
 						'iconclass'=>'closedTickets'
-				));*/
+				));
 /*$nav->addSubMenu(array('desc'=>'Search',
 						'title'=>'Check List Search',
 						'href'=>'checklist-search.php',

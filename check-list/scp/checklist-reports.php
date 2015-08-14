@@ -18,11 +18,11 @@ $nav->addSubMenu(array('desc'=>'Reports',
 						'href'=>'checklist-reports.php',
 						'iconclass'=>'closedTickets'
 				));
-$nav->addSubMenu(array('desc'=>'Search',
+/*$nav->addSubMenu(array('desc'=>'Search',
 						'title'=>'Check List Search',
 						'href'=>'checklist-search.php',
 						'iconclass'=>'closedTickets'
-				));
+				));*/
 $nav->addSubMenu(array('desc'=>'Admin',
 						'title'=>'Check List Admin',
 						'href'=>'checklist-admin.php',
@@ -38,36 +38,40 @@ $nav->addSubMenu(array('desc'=>'About',
 
 // *** Check List Plugin - Includes / Variables
 // ********************************************
-$Date="";
-global $errormsg;
 $errormsg="";
 
-//include (CHECKLIST_INCLUDE_DIR.'settings.php');
-include (CHECKLIST_INCLUDE_DIR.'lib.php');
-require (CHECKLIST_INCLUDE_DIR.'calendar.php');
+global $errormsg;
 
-$jpgraphpath="jpgraph/src/";
-include ($jpgraphpath."jpgraph.php");
-include ($jpgraphpath."jpgraph_line.php");
-include ($jpgraphpath."jpgraph_bar.php");
+## JpGraph Includes
+include (CHECKLIST_JPGRAPH.'jpgraph.php');
+include (CHECKLIST_JPGRAPH.'jpgraph_line.php');
+include (CHECKLIST_JPGRAPH.'jpgraph_bar.php');
 	
-# initialise: 
-#error_reporting(E_ALL);
-/*import_request_variables("gpc");*/
+# initialisation: 
 extract($_REQUEST);
 $num_columns=6;
-# we get this from some basic auth part of the site. 
-//$current_user=getenv('REMOTE_USER');
-$current_user = $thisstaff->getFirstName() . ' ' . $thisstaff->getLastName();
-if ( ! isset($datum) ) { 
+
+
+## Check to see if full date passed via GET or not, if not get todays date
+if ( strlen($_GET['datum'])<2 ) { 
 	$datum=date("Y-m-d",time()); 
 } else {
-	list($year,$month, $day) = split('[/.-]', $datum);
-}	
+	$datum = $_GET['datum'];
+	list($year,$month, $day) = split('[/.-]', $_GET['datum']);
+}
+
+## Work out if month or year was passed via GET and fill in month id no date or GET sent
+if (isset($_GET['month']))  { $month=$_GET['month']; }
+if (isset($_GET['year']))  { $year=$_GET['year']; }
 if ( ! isset($month) ) { $month=date("m"); }
-if ( ! isset($year) ) { $year=date("Y"); }
-if ( ! isset($report) ) { $report=0; }
-#if ( ! isset($graph) ) { $graph=0; }
+if ( ! isset($year) )  { $year=date("Y"); }
+
+$time = time(); 
+$today = date('j',$time);
+$current_user = $thisstaff->getFirstName() . ' ' . $thisstaff->getLastName();
+// ********************************************
+
+
 
 function display_page($datum,$month,$year,$report) {
 	global $lang;
@@ -89,7 +93,7 @@ function display_page($datum,$month,$year,$report) {
 	print "<hr><td valign='top'><table><tr><td><!-- <H1>".$lang[23]."</h1><p> -->";
 	if ( strlen($datum)<2 ) { $datum=date("Y-m-d",time()); }
 	# first row contains calendar
-	$pn = array('&laquo;'=>'./reports.php?vorige', '&raquo;'=>'./reports.php?volgende'); 
+	$pn = array('&laquo;'=>'./checklist-reports.php?vorige', '&raquo;'=>'./checklist-reports.php?volgende'); 
 	print "<tr><td valign='top' nowrap class=border>\n";
 	$time = time(); 
 	$today = date('j',$time); 
@@ -97,19 +101,19 @@ function display_page($datum,$month,$year,$report) {
 		'<span style="color: red; font-weight: bold; font-size: larger; 
 		text-decoration: blink;">' .$today.'</span>')); 
 	# laatste 2 op volgende  regel is aantal chars voor kolomnaam
-	show_calendar("reports.php",$year,$month);
+	show_calendar("checklist-reports.php",$year,$month);
 	print "</td><td valign='top' align='center'>";
     print "<img src='check-list-img/Vista-folder_print.png'>";
     print "</td></tr></table>";
-	print "<a href='reports.php'>".$lang[24]."</a><br>";
+	print "<a href='checklist-reports.php'>".$lang[24]."</a><br>";
 
 	#print "</td>\n\n<!-- end off calender -->\n\n";
 	print "\n\n<!-- end off calendar -->\n\n";
 	# display the possible report types
 	print "<!-- start list of reports -->\n";
-	print "<a href='reports.php?report=1&month=".$month."&year=".$year."'>".$lang[25]."</a><br>\n";
-	print "<a href='reports.php?report=2&month=".$month."&year=".$year."'>".$lang[26]."</a><br>\n";
-	print "<a href='reports.php?report=3&month=".$month."&year=".$year."'>".$lang[27]."</a><br>\n";
+	print "<a href='checklist-reports.php?report=1&month=".$month."&year=".$year."'>".$lang[25]."</a><br>\n";
+	print "<a href='checklist-reports.php?report=2&month=".$month."&year=".$year."'>".$lang[26]."</a><br>\n";
+	print "<a href='checklist-reports.php?report=3&month=".$month."&year=".$year."'>".$lang[27]."</a><br>\n";
 	#print "</form>\n";
 	print "<td valign='top'>";
 	
