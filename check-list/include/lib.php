@@ -6,7 +6,9 @@ function show_calendar($file, $year, $month) {
 	$query = 'SELECT distinct day(datum) as dag FROM ' . CHECKLIST_TABLE_ENTRIES . ' WHERE month(datum)='.$month.' and year(datum)='.$year;
 	$result = db_query($query);
 	while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
-		$days[$row["dag"]] = array('./checklist.php?datum='.
+		/*$days[$row["dag"]] = array('./checklist.php?datum='.
+			$year."-".$month."-".$row["dag"],'linked-day') ;*/
+		$days[$row["dag"]] = array('./'.$file.'?datum='.
 			$year."-".$month."-".$row["dag"],'linked-day') ;
 	}
 	# make links to month before and month after

@@ -16,6 +16,7 @@ define('CHECKLIST_TABLE_ENTRIES',TABLE_PREFIX.'checklist_entries');
 define('PLUGINS_ROOT',INCLUDE_DIR.'plugins/');
 define('CHECKLIST_PLUGIN_ROOT',PLUGINS_ROOT.'check-list/');
 define('CHECKLIST_INCLUDE_DIR',CHECKLIST_PLUGIN_ROOT.'include/');
+define ('CHECKLIST_JPGRAPH','jpgraph/src/');
 
 
 // Include required modules from Check List Plugin

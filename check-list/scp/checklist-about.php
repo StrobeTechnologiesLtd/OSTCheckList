@@ -8,16 +8,16 @@ require('staff.inc.php');
 // *** osTicket - Menu and Navigation
 // **********************************
 $nav->setTabActive('apps');
-/*$nav->addSubMenu(array('desc'=>'Statistics',
+$nav->addSubMenu(array('desc'=>'Statistics',
 						'title'=>'Check List Statistics',
 						'href'=>'checklist-statistics.php',
 						'iconclass'=>'closedTickets'
-				));*/
-/*$nav->addSubMenu(array('desc'=>'Reports',
+				));
+$nav->addSubMenu(array('desc'=>'Reports',
 						'title'=>'Check List Reports',
 						'href'=>'checklist-reports.php',
 						'iconclass'=>'closedTickets'
-				));*/
+				));
 /*$nav->addSubMenu(array('desc'=>'Search',
 						'title'=>'Check List Search',
 						'href'=>'checklist-search.php',
@@ -50,8 +50,8 @@ echo '
 	meaning staff can be given checks like backups and more than do not require tickets but needs doing and recording.</p>
 	<p>
 		<b>Application:</b> Check List Plugin<br />
-		<b>Version:</b> v0.1.5<br />
-		<b>Date:</b> 07/07/2015<br />
+		<b>Version:</b> v0.1.7<br />
+		<b>Date:</b> 14/08/2015<br />
 		<b>Copyright:</b> Strobe Technologies Ltd<br />
 		<b>Website:</b> http://www.strobe-it.co.uk/
 	</p>
