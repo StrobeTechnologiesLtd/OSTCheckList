@@ -210,7 +210,7 @@ function display_report($report,$month,$year) {
 			$thisyear=date("Y");
 			for ($j=-3;$j<=0;$j++) {
 				$year1=$thisyear+$j;
-				print "<a href='reports.php?report=3&year=".$year1."'>".$year1."</a> / ";
+				print "<a href='checklist-reports.php?report=3&year=".$year1."'>".$year1."</a> / ";
 			}
 			print "<hr>\n";
 			# show some graphs
@@ -219,8 +219,8 @@ function display_report($report,$month,$year) {
                         	if ( $i == -1 ) { print "<span class='not_ok'>";}
 	                        if ( $i ==  1 ) { print "<span class='ok'>";}
 	                        if ( $i ==  2 ) { print "<span class='warning'>";}
-				print $statstr[$i].":</span><br>";
-			print "<img src='reports.php?graph=1&sub=".$i."&month=".$month."&year=".$year."'><hr>\n";
+				print $lang[45][$i].":</span><br>";
+			print "<img src='checklist-reports.php?graph=1&sub=".$i."&month=".$month."&year=".$year."'><hr>\n";
 			}
 			break;
 		}
@@ -235,8 +235,8 @@ function display_graph($graph,$sub,$datum,$month,$year,$report) {
 			$query  = "SELECT id,tekst from ". CHECKLIST_TABLE_CHECKLIST ." order by orde desc";
 	                #print "$query";
 	
-     	        	$result = mysql_query($query) or exit ($lang[21].mysql_error());
-			$aantalkleuren=mysql_num_rows($result);
+					$result = db_query($query);
+			#$aantalkleuren=mysql_num_rows($result); ????
 			#initialisation: filling of color table
 			$color=array();
 			$stapje=hexdec('FFFFFF')/$aantalkleuren;
@@ -246,7 +246,7 @@ function display_graph($graph,$sub,$datum,$month,$year,$report) {
 			$data=array();
 			$legend=array();
 			$i=0;
-               	while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
+				while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
 					$i++;
 					$query2="SELECT count(status) as count,month(datum) as maand from entries where ref=".$row["id"]." and status=".$sub." and year(datum)=".$year." group by month(datum) ";
 	     	        		$result2 = mysql_query($query2) or exit ($lang[21].mysql_error());
