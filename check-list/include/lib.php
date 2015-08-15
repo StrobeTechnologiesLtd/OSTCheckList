@@ -52,6 +52,51 @@ function numberOfChecks($period) {
 	return $number;
 }
 
+function display_manreportlist($file) {
+	global $lang;
+
+	$query = 'SELECT * FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled != true ORDER BY orde';
+	$result = db_query($query);
+	
+	echo '
+		<table>
+			<tr>
+				<td>';
+					while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
+						/*for ($i=0;$i<$row["indent"];$i++) {
+							print "&nbsp;&nbsp;";
+						}*/
+						
+						switch ($row["header"]) {
+							case 0:
+								#this is a normal line
+								break;
+							case 1:
+								# this is a header that functions as a menu too
+								for ($i=0;$i<$row["indent"];$i++) {
+									echo '&nbsp;&nbsp;';
+								}
+								echo '<a href="'. $file .'?act=1&id='. $row["id"] .'">';	
+								echo $row["tekst"];
+								echo '</a>';
+								echo '<br />';
+								break;
+							case 2:
+								# this is only a header ### NOT USED???
+								for ($i=0;$i<$row["indent"];$i++) {
+									echo '&nbsp;&nbsp;';
+								}
+								echo $row["tekst"];
+								echo '<br />';
+								break;
+						}
+					}
+echo			'</td>
+			</tr>
+		</table>
+	';
+}
+
 function display_checklist($datum){
 	global $lang;
 	
