@@ -101,14 +101,50 @@ function display_page($datum,$month,$year) {
 			</td>
 	';
 			if (! isset($_GET['act'])) {
+				// has not been submitted
 				echo '<td><p>Please choose the required report from the left handside.<br />
 				All reports are based on the Menu_id configured in the admin screen.</p></td>';
 			} else {
-				echo '<td>';
-					echo '<p>report has been picked!!</p><br />';
-					echo 'Action: '. $_GET['act'] .'<br />
-						ID: '. $_GET['id'] .'<br />
-						Menu ID: '. $_GET['men'] .'';
+				// Submitted
+				echo '<td valign="top">';
+				
+					echo '<h2>Report</h2>
+						<p>Generated Report with the following Details: -<br />
+						<b>Date:</b> ';
+						echo date("D M d, Y G:i a");
+
+					$sql = 'SELECT * FROM '. CHECKLIST_TABLE_CHECKLIST .' WHERE menu_id = '. $_GET['men'] .' ORDER BY orde';
+					$result = db_query($sql);
+					$header = false;
+					echo '<table>';
+					while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
+						if (!$header) {
+							echo '<tr><th colspan="2">';
+								echo $row['tekst'];
+							echo '</th></tr>';
+							$header = true;
+						} else {
+							echo '<tr>
+								<td>Reporting on:</td>
+								<td>';
+								echo $row['tekst'];
+							echo '</td></tr>';
+						}
+					}
+					echo '</table>';
+					echo '<p>&nbsp;</p>';
+					
+					$sql = 'SELECT * FROM '. CHECKLIST_TABLE_CHECKLIST .' WHERE menu_id = '. $_GET['men'] .' ORDER BY orde';
+					$result = db_query($sql);
+					$header = true;
+					while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
+						if (!$header) {
+							echo '<h3>'. $row['tekst'] .'</h3>';
+						} else {
+							$header = false;
+						}
+					}
+					
 				echo '</td>';
 			}
 	echo '</tr>
