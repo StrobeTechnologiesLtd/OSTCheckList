@@ -63,20 +63,16 @@ function display_manreportlist($file) {
 			<tr>
 				<td>';
 					while ($row = db_fetch_array($result, MYSQL_ASSOC)) {
-						/*for ($i=0;$i<$row["indent"];$i++) {
-							print "&nbsp;&nbsp;";
-						}*/
-						
 						switch ($row["header"]) {
 							case 0:
-								#this is a normal line
+								#this is a normal line - Do Nothing
 								break;
 							case 1:
 								# this is a header that functions as a menu too
 								for ($i=0;$i<$row["indent"];$i++) {
 									echo '&nbsp;&nbsp;';
 								}
-								echo '<a href="'. $file .'?act=1&id='. $row["id"] .'">';	
+								echo '<a href="'. $file .'?act=1&id='. $row["id"] .'&men='. $row["menu_id"] .'">';	
 								echo $row["tekst"];
 								echo '</a>';
 								echo '<br />';

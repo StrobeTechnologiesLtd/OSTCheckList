@@ -101,7 +101,15 @@ function display_page($datum,$month,$year) {
 			</td>
 	';
 			if (! isset($_GET['act'])) {
-				echo '<td><p>Please choose the required report from the left handside.</p></td>';
+				echo '<td><p>Please choose the required report from the left handside.<br />
+				All reports are based on the Menu_id configured in the admin screen.</p></td>';
+			} else {
+				echo '<td>';
+					echo '<p>report has been picked!!</p><br />';
+					echo 'Action: '. $_GET['act'] .'<br />
+						ID: '. $_GET['id'] .'<br />
+						Menu ID: '. $_GET['men'] .'';
+				echo '</td>';
 			}
 	echo '</tr>
 	</table>
