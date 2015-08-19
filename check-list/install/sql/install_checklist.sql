@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%checklist` (
   `help` text NOT NULL,
   PRIMARY KEY  (`id`),
   UNIQUE KEY `id` (`id`),
-  KEY `orde` (`orde`),
+  KEY `orde` (`orde`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1$
 
 CREATE TABLE IF NOT EXISTS `%TABLE_PREFIX%checklist_entries` (
