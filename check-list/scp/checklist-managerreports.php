@@ -89,7 +89,7 @@ function display_page($datum,$month,$year) {
 			<td colspan="2"><h1>Check List Management Reports</h1></td>
 		</tr>
 		<tr>
-			<td width="300">
+			<td width="300" valign="top">
 	';
 				show_calendar("checklist-managerreports.php",$year,$month);
 	echo 		'( <a href="checklist-managerreports.php"><b>' . $lang[42] . '</b></a> ) ';
