@@ -18,6 +18,11 @@ $nav->addSubMenu(array('desc'=>'Reports',
 						'href'=>'checklist-reports.php',
 						'iconclass'=>'closedTickets'
 				));
+$nav->addSubMenu(array('desc'=>'Managment Reports',
+						'title'=>'Check List Management Reports',
+						'href'=>'checklist-managerreports.php',
+						'iconclass'=>'closedTickets'
+				));
 $nav->addSubMenu(array('desc'=>'Search',
 						'title'=>'Check List Search',
 						'href'=>'checklist-search.php',
@@ -50,8 +55,8 @@ echo '
 	meaning staff can be given checks like backups and more than do not require tickets but needs doing and recording.</p>
 	<p>
 		<b>Application:</b> Check List Plugin<br />
-		<b>Version:</b> v0.1.9<br />
-		<b>Date:</b> 14/08/2015<br />
+		<b>Version:</b> v0.2.0<br />
+		<b>Date:</b> 21/08/2015<br />
 		<b>Copyright:</b> Strobe Technologies Ltd<br />
 		<b>Website:</b> http://www.strobe-it.co.uk/
 	</p>
