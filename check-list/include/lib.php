@@ -52,7 +52,7 @@ function numberOfChecks($period) {
 	return $number;
 }
 
-function display_manreportlist($file) {
+function display_manreportlist($file,$year,$month) {
 	global $lang;
 
 	$query = 'SELECT * FROM ' . CHECKLIST_TABLE_CHECKLIST . ' WHERE disabled != true ORDER BY orde';
@@ -72,7 +72,7 @@ function display_manreportlist($file) {
 								for ($i=0;$i<$row["indent"];$i++) {
 									echo '&nbsp;&nbsp;';
 								}
-								echo '<a href="'. $file .'?act=1&id='. $row["id"] .'&men='. $row["menu_id"] .'">';	
+								echo '<a href="'. $file .'?act=1&id='. $row["id"] .'&men='. $row["menu_id"] .'&month='. $month .'&year='. $year .'">';	
 								echo $row["tekst"];
 								echo '</a>';
 								echo '<br />';
