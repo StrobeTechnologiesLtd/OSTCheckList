@@ -2,14 +2,11 @@
 
 //	Include required modules from osTicket
 require_once(INCLUDE_DIR . 'class.plugin.php');				#Required to extend / make as plugin
-/*require_once (INCLUDE_DIR . 'class.signal.php');			#Required to register signals / callbacks for routing
-require_once (INCLUDE_DIR . 'class.dispatcher.php');		#Required to allow URL direction*/
  
 
 // Define required variables for Plugin
 #Tables used for SQL
 define('CHECKLIST_TABLE_CHECKLIST',TABLE_PREFIX.'checklist');
-define('CHECKLIST_TABLE_DAGDELEN',TABLE_PREFIX.'checklist_dagdelen');
 define('CHECKLIST_TABLE_ENTRIES',TABLE_PREFIX.'checklist_entries');
 
 #Directories / Paths
@@ -46,26 +43,13 @@ class CheckListPlugin extends Plugin {
         $config = $this->getConfig();
 		
 		
-		if ($config->get ( 'checklist_backend_enable' )) {
+		/*if ($config->get ( 'checklist_backend_enable' )) {
 			$this->createAdminMenu ();
-		}
+		}*/
 		if ($config->get ( 'checklist_frontend_enable' )) {
 			$this->createStaffMenu ();
 		}
-		
-		/*Signal::connect ( 'apps.scp', array (
-				'CheckListPlugin',
-				'callbackDispatch' 
-		) );*/
     }
-	
-	/*static public function callbackDispatch($object, $data) {
-		//URL Patterns and Controllers
-		$media_url = url ( '^/equipment.*assets/', patterns ( 'controller\MediaController', url_get ( '^(?P<url>.*)$', 'defaultAction' ) ) );
-		
-		//Stuff information into dispatcher
-		$object->append ( $media_url );
-	}*/
  
  
 	/**
@@ -82,9 +66,7 @@ class CheckListPlugin extends Plugin {
 	 * Creates menu links in the Admin backend.
 	 */
 	function createAdminMenu() {
-		/*Application::registerStaffApp ( 'Equipment', 'dispatcher.php/equipment/dashboard/', array (
-				iconclass => 'faq-categories' 
-		) );*/
+		/* Currently Not used */
 	}
  
     /**
@@ -99,33 +81,33 @@ class CheckListPlugin extends Plugin {
  
     /**
      * Necessary functionality to configure first run of the application
-     */
-    function configureFirstRun() {
+     */ /*TEMP REMOVED FOR TESTING*/
+    /*function configureFirstRun() {
        if(!$this->createDBTables())
        {
            echo "First run configuration error.  " . "Unable to create database tables!";
        }
-    }
+    }*/
  
     /**
      * Kicks off database installation scripts
      * @return boolean
-     */
-    function createDBTables() {
+     */ /*TEMP REMOVED FOR TESTING*/
+    /*function createDBTables() {
        $installer = new CheckListInstaller();
        return $installer->install();
  
-    }
+    }*/
  
     /**
      * Uninstall hook.
      * @param type $errors
      * @return boolean
-     */
-    function pre_uninstall(&$errors) {
+     */ /*TEMP REMOVED FOR TESTING*/
+    /*function pre_uninstall(&$errors) {
        $installer = new CheckListInstaller();
        return $installer->remove();
-    }
+    }*/
 
 
 }

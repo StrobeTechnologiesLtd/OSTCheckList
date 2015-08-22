@@ -6,6 +6,14 @@ require_once(INCLUDE_DIR.'/class.forms.php');
 class CheckListConfig extends PluginConfig{
 	function getOptions() {
 		return array(
+			'checklist_frontend_enable' => new BooleanField(array(
+				'id' => 'checklist_frontend_enable',
+				'label' => 'Enable Frontend',
+				'configuration' => array(
+					'desc' => 'Staff facing interface')
+			))
+		);
+		/*return array(
 			'checklist_backend_enable' => new BooleanField(array(
 				'id' => 'checklist_backend_enable',
 				'label' => 'Enable Backend',
@@ -18,7 +26,7 @@ class CheckListConfig extends PluginConfig{
 				'configuration' => array(
 					'desc' => 'Staff facing interface')
 			))
-		);
+		);*/
 	}
  
 	function pre_save(&$config, &$errors) {
